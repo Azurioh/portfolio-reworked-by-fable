@@ -23,7 +23,8 @@
     "build": "tsc && tsc -p tsconfig.node.json && vite build && tsc -p tsconfig.server.json",
     "start": "node dist-server/server/index.js",
     "test": "vitest run",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "images": "tsx scripts/images.ts"
   },
   "devDependencies": {
     "@types/node": "^22.20.2",
