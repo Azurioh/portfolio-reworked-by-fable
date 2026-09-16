@@ -1,0 +1,21 @@
+{
+  "menu.open": "Ouvrir le menu",
+  "menu.close": "Fermer le menu",
+  "quotes.pause": "Mettre en pause",
+  "quotes.resume": "Reprendre la lecture",
+  "terminal.unavailable": "fatal: api.github.com injoignable · voir github.com/azurioh",
+  "terminal.none": "aucun push public récent · voir github.com/azurioh",
+  "footer.localTime": "Besançon, {time}",
+  "contact.status.sending": "Envoi en cours…",
+  "contact.status.accepted": "Message envoyé.",
+  "contact.status.sent": "Message envoyé. Je vous réponds vite.",
+  "contact.status.failed": "Envoi impossible pour le moment : votre client mail s’ouvre avec le message prérempli. Sinon, écrivez à {email}.",
+  "contact.error.name.tooShort": "Indiquez votre nom.",
+  "contact.error.name.tooLong": "Le nom est trop long ({max} caractères maximum).",
+  "contact.error.email.invalid": "Cette adresse ne semble pas valide.",
+  "contact.error.subject.tooShort": "Donnez un sujet.",
+  "contact.error.subject.tooLong": "Le sujet est trop long ({max} caractères maximum).",
+  "contact.error.message.tooShort": "Quelques mots de plus ({min} caractères minimum).",
+  "contact.error.message.tooLong": "Le message est trop long ({max} caractères maximum).",
+  "contact.error.invalid": "Ce champ est invalide."
+}

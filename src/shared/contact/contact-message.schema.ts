@@ -10,30 +10,14 @@ const MESSAGE_MAX_LENGTH = 4000;
 /**
  * Contact form payload, shared by the browser (inline validation) and the
  * server (boundary validation). `website` is a honeypot: humans leave it empty.
+ * Issues carry no custom message: the browser maps `path` + `code` (and the
+ * `minimum` / `maximum` bounds) to localized text, the server logs them as is.
  */
 export const contactMessageSchema = z.object({
-  name: z
-    .string()
-    .check(
-      z.trim(),
-      z.minLength(NAME_MIN_LENGTH, 'Indiquez votre nom.'),
-      z.maxLength(NAME_MAX_LENGTH, `Le nom est trop long (${NAME_MAX_LENGTH} caractères maximum).`),
-    ),
-  email: z.string().check(z.trim(), z.email('Cette adresse ne semble pas valide.')),
-  subject: z
-    .string()
-    .check(
-      z.trim(),
-      z.minLength(SUBJECT_MIN_LENGTH, 'Donnez un sujet.'),
-      z.maxLength(SUBJECT_MAX_LENGTH, `Le sujet est trop long (${SUBJECT_MAX_LENGTH} caractères maximum).`),
-    ),
-  message: z
-    .string()
-    .check(
-      z.trim(),
-      z.minLength(MESSAGE_MIN_LENGTH, `Quelques mots de plus (${MESSAGE_MIN_LENGTH} caractères minimum).`),
-      z.maxLength(MESSAGE_MAX_LENGTH, `Le message est trop long (${MESSAGE_MAX_LENGTH} caractères maximum).`),
-    ),
+  name: z.string().check(z.trim(), z.minLength(NAME_MIN_LENGTH), z.maxLength(NAME_MAX_LENGTH)),
+  email: z.string().check(z.trim(), z.email()),
+  subject: z.string().check(z.trim(), z.minLength(SUBJECT_MIN_LENGTH), z.maxLength(SUBJECT_MAX_LENGTH)),
+  message: z.string().check(z.trim(), z.minLength(MESSAGE_MIN_LENGTH), z.maxLength(MESSAGE_MAX_LENGTH)),
   website: z.string(),
 });
 

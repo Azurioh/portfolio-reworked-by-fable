@@ -1,0 +1,243 @@
+{
+  "head": {
+    "title": "Alan Cunin — Epitech student, cloud, hackathons &amp; esports",
+    "description": "Alan Cunin, Epitech student in Mulhouse, captain of the AWS Cloud Club, head of an esports association in Besançon. 1st worldwide at the AWS Clash of Agents 2026.",
+    "ogDescription": "I learn by building. From 2 min 20 to 10 seconds: the AWS Clash of Agents record."
+  },
+  "links": {
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
+    "cv": "Resume",
+    "malt": "Malt"
+  },
+  "nav": {
+    "skip": "Skip to content",
+    "logoLabel": "Back to top",
+    "linksLabel": "Main navigation",
+    "items": {
+      "record": "The record",
+      "atelier": "What drives me",
+      "pieces": "The pieces",
+      "parcours": "The journey",
+      "voix": "The voices",
+      "contact": "Correspondence"
+    },
+    "cta": "Let's talk?",
+    "langLabel": "Lire en français"
+  },
+  "menu": {
+    "linksLabel": "Mobile menu",
+    "foot": "alancunin@gmail.com · Mulhouse / Besançon"
+  },
+  "hero": {
+    "firstName": "Alan",
+    "lastName": "Cunin",
+    "eyebrow": "<b>~/alan</b> · epitech · class of 2028 · besançon",
+    "role": "Third-year student at Epitech, captain of the AWS Cloud Club, head of an esports association. I learn <em>by building</em> — and I don't sleep much when there's a hackathon on.",
+    "terminal": {
+      "whoami": "alan · epitech student · cloud &amp; devops · ai agents",
+      "commitPending": "connecting to github…"
+    },
+    "portraitAlt": "Portrait of Alan Cunin",
+    "ring": "Cloud &amp; DevOps · Hackathons · Esports · Teaching · Metal &amp; rock · Franche-Comté ·",
+    "scrollLabel": "Scroll to the record",
+    "scroll": "Scroll"
+  },
+  "record": {
+    "plate": "The record",
+    "title": "From 2 min 20 to <em>10 seconds</em>.",
+    "paragraphs": [
+      "Strasbourg, 18 March 2026. The AWS Clash of Agents: eleven hours to get AI agents collaborating around an online pet shop. My first prototype answered in <b>2 min 20</b>. Unacceptable. I spent the night reworking every process by hand.",
+      "By morning: <b>10 s</b>. The organisers thought it was an anomaly and audited my code. Nothing to report. First prize, handed over by the CTO of AWS France, and an international record. It's not genius, it's sheer persistence."
+    ],
+    "bench": {
+      "ariaLabel": "Average agent response time: 2 minutes 20 before, 10 seconds after, that is 14 times faster.",
+      "label": "Average response time",
+      "before": "before",
+      "beforeValue": "2 min 20",
+      "after": "after",
+      "afterValue": "10 s",
+      "multiplier": "faster, in one night",
+      "stats": [
+        { "value": "1<sup>st</sup>", "label": "international" },
+        { "value": "0", "label": "audit irregularities" },
+        { "value": "11 h", "label": "of competition" }
+      ]
+    }
+  },
+  "atelier": {
+    "plate": "What drives me",
+    "title": "Four <em>obsessions</em>, a single brain.",
+    "items": [
+      {
+        "title": "The cloud, as a community",
+        "desc": "Captain of the AWS Cloud Club Mulhouse since 2025. I run workshops on the AWS ecosystem and put together talks with Developer Advocates. Captain Silver distinction in 2026.",
+        "tags": ["AWS", "Bedrock", "Docker", "Terraform", "Workshops"]
+      },
+      {
+        "title": "Hackathons",
+        "desc": "Winner of the Nuit de l'info, BaselHack 2024 and 2025 with Team NFT, Epitech Game Jams, CARE Alsace award at the Hacking Health Camp with VisiSurg. One sleepless night, one team, one real problem: my favourite format.",
+        "tags": ["Nuit de l'info", "BaselHack", "Game Jam", "Hacking Health"]
+      },
+      {
+        "title": "Esports, behind the scenes",
+        "desc": "Head of BSK Esport in Besançon since 2022. Running the association, live broadcast production, a real-time data acquisition tool, events like Ici C'est Besac, the Bug Days or tournaments in public libraries.",
+        "tags": ["Leadership", "Live production", "Events", "React", "Node.js"]
+      },
+      {
+        "title": "Passing it on",
+        "desc": "Teaching assistant at Epitech since 2025: mentoring on projects, designing modules. Before that, treasurer of the student union and founder of the gaming club. Explaining is the best way to check that you've understood.",
+        "tags": ["Mentoring", "C/C++", "Student union", "Gaming club"]
+      }
+    ],
+    "method": [
+      {
+        "title": "Understand before copying",
+        "desc": "If I can't explain it to a first-year student, I haven't understood it."
+      },
+      {
+        "title": "Ship, then polish",
+        "desc": "Something that runs at 3 a.m. beats a perfect plan at 9 a.m. Then we optimise."
+      },
+      {
+        "title": "Off screen",
+        "desc": "Metal and rock, volunteering, organising events. And a console when there's time left."
+      }
+    ]
+  },
+  "pieces": {
+    "plate": "The pieces",
+    "title": "Three things I've <em>built</em>.",
+    "viewOnGithub": "View on GitHub",
+    "more": "The rest is on GitHub",
+    "items": [
+      {
+        "badge": "CARE Alsace award",
+        "category": "Hacking Health Camp · Strasbourg · 2026",
+        "title": "VisiSurg",
+        "lead": "Making a surgical report understandable by the patient who went through it.",
+        "desc": "One weekend with caregivers and designers. The surgical report is translated into a 3D visualisation of the procedure, and a RAG chatbot answers the patient's questions relying solely on their own medical record. CARE Alsace award at the finish line.",
+        "stack": ["RAG", "LLM", "3D", "Healthcare"]
+      },
+      {
+        "category": "Open-source CLI · 2026",
+        "title": "ccprofile",
+        "lead": "Claude Code plugin and skill profiles, per project, versioned in the repository.",
+        "desc": "Instead of enabling everything globally, you define profiles (web, backend, mobile…) and apply them project by project. Skills are copied into the repository, plugins written to the committed config: any teammate or cloud container gets the right tooling without installing anything. Zero dependencies, Windows / macOS / Linux, drift detection included.",
+        "stack": ["Node.js", "JavaScript", "CLI", "Claude Code"]
+      },
+      {
+        "category": "TypeScript framework · open source · 2026",
+        "title": "discord-kernel",
+        "lead": "The “framework” half of a Discord bot, without the bot.",
+        "desc": "Typed command DSL, guards (permissions, roles, cooldowns), interaction routing, persistent components, i18n that refuses to start on a duplicate key. The kernel only knows discord.js: database, logger and scheduler are ports the application implements. Clean Architecture enforced by the very fact of being a package.",
+        "stack": ["TypeScript", "discord.js", "Clean Architecture", "i18n"]
+      }
+    ]
+  },
+  "parcours": {
+    "plate": "The journey",
+    "title": "Technique can be learned. <em>Perseverance</em> is cultivated.",
+    "items": [
+      {
+        "when": "March 2026",
+        "what": "1<sup>st</sup> prize worldwide",
+        "where": "AWS Clash of Agents, Strasbourg",
+        "desc": "Eleven hours, one night, one record. Then the CARE Alsace award at the Hacking Health Camp with VisiSurg, and Anthropic's Claude Code in Action certification the same year.",
+        "tags": ["Bedrock", "AI agents"]
+      },
+      {
+        "when": "2025 → today",
+        "what": "Captain",
+        "where": "AWS Cloud Club Mulhouse",
+        "desc": "AWS workshops, talks with Developer Advocates, coordinating the student community. Captain Silver in 2026.",
+        "tags": ["AWS", "Community"]
+      },
+      {
+        "when": "Feb. 2025 → today",
+        "what": "Teaching assistant",
+        "where": "Epitech Mulhouse",
+        "desc": "Technical mentoring of students, designing and running modules. Alongside that, a few freelance assignments on top of my studies.",
+        "tags": ["Teaching", "C/C++", "Mentoring"]
+      },
+      {
+        "when": "Jul. → Dec. 2024",
+        "what": "Backend developer internship",
+        "where": "AkorD, Mulhouse",
+        "desc": "AI agent for PDF data extraction, AWS cloud architectures, AI pipeline optimisation. My first 100% cloud environment.",
+        "tags": ["Python", "Node.js", "AWS"]
+      },
+      {
+        "when": "Sept. 2023 → 2028",
+        "what": "Grande École programme",
+        "where": "Epitech Mulhouse",
+        "desc": "Treasurer of the student union, founder of the gaming club. Winner of the Nuit de l'info, BaselHack 2024 and 2025, Game Jams. Lots of C, then C++, then everything else.",
+        "tags": ["C", "C++", "Hackathons", "Student life"]
+      },
+      {
+        "when": "Summer 2023",
+        "what": "First dev job",
+        "where": "Création Parquets &amp; Carrelages",
+        "desc": "Product label generation app, then redesign of the “Idéal Parquets” showcase website. The moment code became a profession.",
+        "tags": ["Node.js", "Vue.js"]
+      },
+      {
+        "when": "Aug. 2022 → today",
+        "what": "Head &amp; developer",
+        "where": "BSK Esport, Besançon",
+        "desc": "Where it all started: an esports association, a website to build, a live production setup to put together, events to organise. My first full-scale playground.",
+        "tags": ["Leadership", "Esports", "Events"]
+      }
+    ],
+    "laurelsLabel": "Awards",
+    "laurels": [
+      { "big": "1<sup>st</sup> worldwide", "text": "AWS Clash of Agents · Strasbourg · 2026" },
+      { "big": "CARE award", "text": "Hacking Health Camp · VisiSurg · 2026" },
+      { "big": "Captain Silver", "text": "AWS Cloud Club · Mulhouse · 2026" },
+      { "big": "Winner", "text": "Nuit de l'info · BaselHack · Epitech Game Jams" }
+    ]
+  },
+  "voix": {
+    "plate": "The voices",
+    "items": [
+      {
+        "text": "“Alan is a developer with unshakeable motivation. He persevered, learned to write clean code, understood the challenges of optimisation and adapted to our fully cloud-based environment.”",
+        "author": "Jonathan Cohen",
+        "role": "Project manager, AkorD"
+      },
+      {
+        "text": "“Alan brought all his expertise and leadership to the development of our association: website, live broadcast production, event organisation. Professional and autonomous.”",
+        "author": "Deniz Gecici",
+        "role": "President, BSK Esport"
+      },
+      {
+        "text": "“We particularly appreciated his ability to work around technical obstacles while meeting deadlines. A reliable, skilled and proactive developer.”",
+        "author": "Sophie Lamboley",
+        "role": "Marketing manager, Création Parquets &amp; Carrelages"
+      }
+    ],
+    "prevLabel": "Previous testimonial",
+    "nextLabel": "Next testimonial"
+  },
+  "contact": {
+    "plate": "Correspondence",
+    "title": "Shall we <em>talk</em>?",
+    "lead": "A hackathon to set up, an AWS talk, a question about Epitech, a project that obsesses you too: write to me, I reply fast.",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "subject": "Subject",
+      "subjectPlaceholder": "A hackathon, a talk, a project…",
+      "message": "Message",
+      "hint": "A few lines are enough. I reply fast.",
+      "website": "Website",
+      "submit": "Send"
+    },
+    "asideBefore": "For a freelance assignment, head over here instead: ",
+    "asideAfter": "."
+  },
+  "footer": {
+    "copyright": "© 2026 Alan Cunin — Besançon &amp; Mulhouse.",
+    "made": "Handmade, late at night."
+  }
+}

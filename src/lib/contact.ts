@@ -1,13 +1,11 @@
 import * as z from 'zod/mini';
 import { contactMessageSchema, type ContactMessage } from '#shared/contact/contact-message.schema';
+import { CONTACT_FIELDS, describeContactIssue, type ContactField } from './contact-issues';
+import { t, translate } from './i18n';
 
 const FALLBACK_MAILTO = 'alancunin@gmail.com';
 const DEFAULT_ENDPOINT = '/api/contact';
 const SUBMIT_TIMEOUT_MS = 12_000;
-
-type FieldName = Exclude<keyof ContactMessage, 'website'>;
-
-const FIELDS: readonly FieldName[] = ['name', 'email', 'subject', 'message'];
 
 class ContactDeliveryError extends Error {
   readonly httpStatus: number | null;
@@ -70,10 +68,10 @@ export function setupContactForm(): void {
   }
   const endpoint = readEndpoint();
 
-  const fieldWrap = (name: FieldName): HTMLElement | null =>
+  const fieldWrap = (name: ContactField): HTMLElement | null =>
     form.querySelector<HTMLElement>(`[name="${name}"]`)?.closest<HTMLElement>('.cform__field') ?? null;
 
-  const setError = (params: { name: FieldName; message: string | null }): void => {
+  const setError = (params: { name: ContactField; message: string | null }): void => {
     const wrap = fieldWrap(params.name);
     const out = form.querySelector<HTMLElement>(`[data-error-for="${params.name}"]`);
     const input = form.querySelector<HTMLElement>(`[name="${params.name}"]`);
@@ -101,18 +99,18 @@ export function setupContactForm(): void {
 
   const validate = (): ContactMessage | null => {
     const result = z.safeParse(contactMessageSchema, readForm());
-    for (const name of FIELDS) {
+    for (const name of CONTACT_FIELDS) {
       setError({ name, message: null });
     }
     if (result.success) {
       return result.data;
     }
-    let firstInvalid: FieldName | null = null;
+    let firstInvalid: ContactField | null = null;
     for (const issue of result.error.issues) {
-      const name = issue.path[0];
-      if (typeof name === 'string' && FIELDS.includes(name as FieldName)) {
-        setError({ name: name as FieldName, message: issue.message });
-        firstInvalid ??= name as FieldName;
+      const described = describeContactIssue(issue);
+      if (described !== null) {
+        setError({ name: described.field, message: translate({ key: described.key, vars: described.vars }) });
+        firstInvalid ??= described.field;
       }
     }
     if (firstInvalid) {
@@ -121,7 +119,7 @@ export function setupContactForm(): void {
     return null;
   };
 
-  for (const name of FIELDS) {
+  for (const name of CONTACT_FIELDS) {
     const input = form.querySelector<HTMLElement>(`[name="${name}"]`);
     input?.addEventListener('blur', () => {
       const wrap = fieldWrap(name);
@@ -138,24 +136,21 @@ export function setupContactForm(): void {
       return;
     }
     if (data.website.trim() !== '') {
-      setStatus({ text: 'Message envoyé.', tone: 'ok' });
+      setStatus({ text: t('contact.status.accepted'), tone: 'ok' });
       form.reset();
       return;
     }
 
     form.classList.add('is-busy');
     submit.disabled = true;
-    setStatus({ text: 'Envoi en cours…', tone: 'neutral' });
+    setStatus({ text: t('contact.status.sending'), tone: 'neutral' });
     try {
       await deliver({ endpoint, data });
       form.reset();
-      setStatus({ text: 'Message envoyé. Je vous réponds vite.', tone: 'ok' });
+      setStatus({ text: t('contact.status.sent'), tone: 'ok' });
     } catch {
       window.location.href = buildMailto(data);
-      setStatus({
-        text: `Envoi impossible pour le moment : votre client mail s’ouvre avec le message prérempli. Sinon, écrivez à ${FALLBACK_MAILTO}.`,
-        tone: 'err',
-      });
+      setStatus({ text: translate({ key: 'contact.status.failed', vars: { email: FALLBACK_MAILTO } }), tone: 'err' });
     } finally {
       form.classList.remove('is-busy');
       submit.disabled = false;

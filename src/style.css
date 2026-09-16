@@ -416,8 +416,24 @@ body::before {
   color: var(--ink);
 }
 
-.nav__burger {
+.nav__lang {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
   margin-left: auto;
+  font: 500 0.7rem var(--font-mono);
+  letter-spacing: 0.1em;
+  opacity: 0.8;
+  transition: opacity 0.25s;
+}
+
+.nav__lang:hover {
+  opacity: 1;
+}
+
+.nav__burger {
   width: 48px;
   height: 48px;
   display: grid;
@@ -452,6 +468,10 @@ body::before {
 
   .nav__burger {
     display: none;
+  }
+
+  .nav__lang {
+    margin-left: 0;
   }
 }
 
@@ -501,6 +521,13 @@ body::before {
   font: 500 0.7rem var(--font-mono);
   letter-spacing: 0.1em;
   color: var(--accent);
+}
+
+.menu .nav__lang {
+  align-self: flex-start;
+  justify-content: flex-start;
+  margin-top: 1.5rem;
+  margin-left: 0;
 }
 
 .menu__foot {

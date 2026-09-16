@@ -1,9 +1,12 @@
 /** Absolute origin of the published site, without a trailing slash. */
 export const SITE_URL = 'https://alancunin.fr';
 
+/** Dictionary folder names under `src/locales/`; one entry per published language. */
+export type LocaleCode = 'fr' | 'en';
+
 export interface Locale {
   /** Dictionary folder name under `src/locales/` and switcher identifier. */
-  readonly code: string;
+  readonly code: LocaleCode;
   /** Public path of the locale root, always starting and ending with `/`. */
   readonly path: string;
   /** Value of the `<html lang>` attribute. */
@@ -17,4 +20,4 @@ export const locales: readonly Locale[] = [
   { code: 'en', path: '/en/', htmlLang: 'en', ogLocale: 'en_US' },
 ];
 
-export const defaultLocale = 'fr';
+export const defaultLocale: LocaleCode = 'fr';

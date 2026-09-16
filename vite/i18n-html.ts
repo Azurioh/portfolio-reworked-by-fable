@@ -4,6 +4,7 @@ import type { Plugin } from 'vite';
 import { z } from 'zod';
 import { defaultLocale, locales, SITE_URL, type Locale } from '../src/locales/index.ts';
 import { I18nTemplateError } from './errors/i18n-template.error.ts';
+import { MissingAlternateLocaleError } from './errors/missing-alternate-locale.error.ts';
 import { MissingDictionaryError } from './errors/missing-dictionary.error.ts';
 
 /**
@@ -27,6 +28,8 @@ interface AlternateLocale {
   readonly htmlLang: string;
   readonly path: string;
   readonly url: string;
+  /** Text of the language switcher link, e.g. `EN`. */
+  readonly label: string;
 }
 
 interface PageMeta {
@@ -35,28 +38,40 @@ interface PageMeta {
   readonly path: string;
   readonly url: string;
   readonly alternates: readonly AlternateLocale[];
+  /** Target of the language switcher: the first alternate. */
+  readonly alternate: AlternateLocale;
 }
+
+const toAlternate = (locale: Locale): AlternateLocale => ({
+  code: locale.code,
+  htmlLang: locale.htmlLang,
+  path: locale.path,
+  url: `${SITE_URL}${locale.path}`,
+  label: locale.code.toUpperCase(),
+});
 
 /**
  * Builds the locale-derived values exposed to the template under `meta.*`.
  * @param params.locale - Locale of the page being rendered.
  * @param params.available - Locales that have a dictionary; the others become `alternates`.
  * @returns The `meta` object merged next to the dictionary before rendering.
+ * @throws {MissingAlternateLocaleError} When no other locale is available, since the template links to one.
  */
-export const buildMeta = (params: { locale: Locale; available: readonly Locale[] }): PageMeta => ({
-  lang: params.locale.htmlLang,
-  ogLocale: params.locale.ogLocale,
-  path: params.locale.path,
-  url: `${SITE_URL}${params.locale.path}`,
-  alternates: params.available
-    .filter((other) => other.code !== params.locale.code)
-    .map((other) => ({
-      code: other.code,
-      htmlLang: other.htmlLang,
-      path: other.path,
-      url: `${SITE_URL}${other.path}`,
-    })),
-});
+export const buildMeta = (params: { locale: Locale; available: readonly Locale[] }): PageMeta => {
+  const alternates = params.available.filter((other) => other.code !== params.locale.code).map(toAlternate);
+  const [alternate] = alternates;
+  if (alternate === undefined) {
+    throw new MissingAlternateLocaleError({ code: params.locale.code });
+  }
+  return {
+    lang: params.locale.htmlLang,
+    ogLocale: params.locale.ogLocale,
+    path: params.locale.path,
+    url: `${SITE_URL}${params.locale.path}`,
+    alternates,
+    alternate,
+  };
+};
 
 const resolveKey = (params: { values: Record<string, unknown>; path: string }): unknown => {
   let current: unknown = params.values;

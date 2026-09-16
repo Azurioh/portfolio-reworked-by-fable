@@ -59,7 +59,8 @@
         <a href="#voix" data-cursor="link"><span>05</span>{{ nav.items.voix }}</a>
       </nav>
       <a class="nav__cta" href="#contact" data-cursor="link" data-magnetic>{{ nav.cta }}</a>
-      <button class="nav__burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="{{ nav.burgerLabel }}">
+      <a class="nav__lang" href="{{ meta.alternate.path }}" hreflang="{{ meta.alternate.htmlLang }}" lang="{{ meta.alternate.htmlLang }}" aria-label="{{ nav.langLabel }}" data-cursor="link">{{ meta.alternate.label }}</a>
+      <button class="nav__burger" type="button" aria-expanded="false" aria-controls="menu">
         <i></i><i></i>
       </button>
     </header>
@@ -73,6 +74,7 @@
         <a href="#voix"><span>05</span>{{ nav.items.voix }}</a>
         <a href="#contact"><span>06</span>{{ nav.items.contact }}</a>
       </nav>
+      <a class="nav__lang" href="{{ meta.alternate.path }}" hreflang="{{ meta.alternate.htmlLang }}" lang="{{ meta.alternate.htmlLang }}" aria-label="{{ nav.langLabel }}" data-cursor="link">{{ meta.alternate.label }}</a>
       <p class="menu__foot">{{ menu.foot }}</p>
     </div>
 
@@ -129,7 +131,7 @@
         </a>
       </section>
 
-      <!-- ============ 01 · LE RECORD ============ -->
+      <!-- ============ 01 · #record ============ -->
       <section class="record" id="record">
         <div class="record__pin">
           <div class="record__text">
@@ -171,7 +173,7 @@
         </div>
       </section>
 
-      <!-- ============ 02 · CE QUI M'ANIME ============ -->
+      <!-- ============ 02 · #atelier ============ -->
       <section class="atelier" id="atelier">
         <p class="plate"><span>02</span> {{ atelier.plate }}</p>
         <h2 class="h2" data-split="lines">
@@ -239,7 +241,7 @@
         </div>
       </div>
 
-      <!-- ============ 03 · LES PIÈCES ============ -->
+      <!-- ============ 03 · #pieces ============ -->
       <section class="pieces" id="pieces">
         <p class="plate"><span>03</span> {{ pieces.plate }}</p>
         <h2 class="h2" data-split="lines">{{ pieces.title }}</h2>
@@ -321,7 +323,7 @@
         </a>
       </section>
 
-      <!-- ============ 04 · LE PARCOURS ============ -->
+      <!-- ============ 04 · #parcours ============ -->
       <section class="parcours" id="parcours">
         <p class="plate"><span>04</span> {{ parcours.plate }}</p>
         <h2 class="h2" data-split="lines">{{ parcours.title }}</h2>
@@ -403,7 +405,7 @@
         </ul>
       </section>
 
-      <!-- ============ 05 · LES VOIX ============ -->
+      <!-- ============ 05 · #voix ============ -->
       <section class="voix" id="voix">
         <p class="plate"><span>05</span> {{ voix.plate }}</p>
 
@@ -426,7 +428,7 @@
           <button class="quotes__btn" type="button" data-quotes-prev aria-label="{{ voix.prevLabel }}" data-cursor="link">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
           </button>
-          <button class="quotes__btn" type="button" data-quotes-toggle aria-label="{{ voix.pauseLabel }}" aria-pressed="false" data-cursor="link">
+          <button class="quotes__btn" type="button" data-quotes-toggle aria-pressed="false" data-cursor="link">
             <svg class="quotes__ico-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14" /></svg>
             <svg class="quotes__ico-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5l11 7-11 7z" /></svg>
           </button>
@@ -438,7 +440,7 @@
         </div>
       </section>
 
-      <!-- ============ 06 · CORRESPONDANCE ============ -->
+      <!-- ============ 06 · #contact ============ -->
       <section class="contact" id="contact">
         <p class="plate"><span>06</span> {{ contact.plate }}</p>
         <h2 class="contact__title" data-split="lines">

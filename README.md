@@ -10,7 +10,7 @@ cp .env.example .env   # then fill DISCORD_WEBHOOK_URL
 pnpm dev               # Vite on http://localhost:5173 (proxies /api → :8787)
 pnpm dev:server        # Hono API on http://localhost:8787, in a second terminal
 pnpm build             # type-check + build the site in dist/ and the server in dist-server/
-pnpm test              # vitest (i18n template rendering)
+pnpm test              # vitest (i18n rendering, dictionary parity, runtime strings)
 pnpm start             # serve dist/ and /api/contact from dist-server/ (needs the env vars)
 pnpm preview           # Vite preview of dist/ only (no API)
 ```
@@ -40,10 +40,13 @@ The Hono handler (`server/app.ts` and `server/contact/`) only uses Web-standard 
 
 ## Structure
 
-- `index.html` — locale-agnostic template of the whole page (sections are "planches" I → VI). Every visible string, `alt`, `aria-label`, `placeholder` and head tag is a `{{ section.key }}` placeholder; `{{ meta.lang }}`, `{{ meta.url }}` and `{{ meta.ogLocale }}` come from the locale config.
-- `src/locales/index.ts` — locale list (`code`, public `path`, `htmlLang`, `ogLocale`), `defaultLocale` and `SITE_URL`.
-- `src/locales/<code>/page.json` — one dictionary per locale, nested by section (`nav`, `hero`, `record`, …), values are trusted HTML (`<em>`, `&nbsp;` allowed). Only `fr` exists for now.
-- `vite/i18n-html.ts` — Vite plugin that renders the template once per locale that has a dictionary: `/` → `dist/index.html`, `/<code>/` → `dist/<code>/index.html`, same hashed assets. In dev, `/` and `/<code>/` are rendered on the fly (`/<code>/` is a 404 until its dictionary exists). A missing key or a leftover `{{` fails the build. Unit tests in `vite/i18n-html.test.ts` (`pnpm test`).
+- `index.html` — locale-agnostic template of the whole page (sections are "planches" I → VI). Every visible string, `alt`, `aria-label`, `placeholder` and head tag is a `{{ section.key }}` placeholder; `{{ meta.lang }}`, `{{ meta.url }}`, `{{ meta.ogLocale }}` and the language switcher (`{{ meta.alternate.path }}`, `.htmlLang`, `.label`) come from the locale config.
+- `src/locales/index.ts` — locale list (`code`, public `path`, `htmlLang`, `ogLocale`), `LocaleCode`, `defaultLocale` and `SITE_URL`.
+- `src/locales/<code>/page.json` — one dictionary per locale, nested by section (`nav`, `hero`, `record`, …), values are trusted HTML (`<em>`, `&nbsp;` allowed). Rendered at build time only, never bundled in the client.
+- `src/locales/<code>/runtime.json` — flat dictionary of the strings set from TypeScript (menu and pause `aria-label`s, form validation and status messages, terminal fallbacks, local-time label). `{name}` placeholders are filled by `translate()`. Bundled in the client (small).
+- `src/lib/i18n.ts` — `getLocale()` reads `<html lang>` (unknown values fall back to `fr`), `t(key)` / `translate({ key, vars })` read the runtime dictionary. Keys are typed from the French file.
+- `src/lib/contact-issues.ts` — maps a locale-neutral issue of the shared Zod schema (`path` + `code` + bounds) to a runtime key.
+- `vite/i18n-html.ts` — Vite plugin that renders the template once per locale that has a dictionary: `/` → `dist/index.html`, `/<code>/` → `dist/<code>/index.html`, same hashed assets. In dev, `/` and `/<code>/` are rendered on the fly. A missing key, a leftover `{{` or a locale with no alternate to link to fails the build. Unit tests in `vite/i18n-html.test.ts`, dictionary parity in `src/locales/locales.test.ts` (`pnpm test`).
 - `src/style.css` — design tokens, layout, responsive rules, reduced-motion fallbacks.
 - `src/main.ts` — boot sequence (intro, smooth scroll, scenes).
 - `src/lib/smooth.ts` — Lenis + GSAP ticker sync.
@@ -55,6 +58,19 @@ The Hono handler (`server/app.ts` and `server/contact/`) only uses Web-standard 
 - `src/shared/contact/` — Zod schema shared by the browser and the server (`#shared/*` import alias).
 - `server/` — Hono server (`#server/*` alias): `env.ts` (the only reader of `process.env`), `app.ts` (composition), `contact/` split into `domain/`, `application/`, `infrastructure/`, `presentation/`.
 - `public/img/` — optimised WebP assets; `public/cv.pdf`.
+
+## Locales
+
+`/` is French, `/en/` is English; both share the section ids, the assets and `/cv.pdf`. The switcher link (`.nav__lang`, in the header and in the mobile menu) points to the other locale and carries `hreflang`/`lang` plus an `aria-label` in the target language (`nav.langLabel`).
+
+To edit a translation, change the value in `src/locales/<code>/page.json` (page content) or `src/locales/<code>/runtime.json` (strings set from TypeScript). Keep the key set identical across locales: `pnpm test` fails on a missing or extra key, on a non-string leaf and on a `{variable}` mismatch.
+
+To add a locale:
+
+1. Append `{ code, path: '/<code>/', htmlLang, ogLocale }` to `locales` in `src/locales/index.ts` and extend the `LocaleCode` union.
+2. Copy `src/locales/fr/page.json` and `src/locales/fr/runtime.json` to `src/locales/<code>/` and translate every value (same keys, same `<em>`/`<b>` emphasis, no French `&nbsp;` before `?`/`:`/`!` where the target language has no such rule).
+3. Register the runtime file in `dictionaries` in `src/lib/i18n.ts` (the type-check fails until every `LocaleCode` has one).
+4. `pnpm build` emits `dist/<code>/index.html`; the switcher links to the first other locale, so with three or more locales replace it with a list built from `meta.alternates`.
 
 ## Content sources
 

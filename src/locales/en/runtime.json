@@ -1,0 +1,21 @@
+{
+  "menu.open": "Open the menu",
+  "menu.close": "Close the menu",
+  "quotes.pause": "Pause",
+  "quotes.resume": "Resume",
+  "terminal.unavailable": "fatal: api.github.com unreachable · see github.com/azurioh",
+  "terminal.none": "no recent public push · see github.com/azurioh",
+  "footer.localTime": "Besançon, {time}",
+  "contact.status.sending": "Sending…",
+  "contact.status.accepted": "Message sent.",
+  "contact.status.sent": "Message sent. I'll get back to you soon.",
+  "contact.status.failed": "Sending is not possible right now: your mail client is opening with the message prefilled. Otherwise, write to {email}.",
+  "contact.error.name.tooShort": "Please enter your name.",
+  "contact.error.name.tooLong": "The name is too long ({max} characters maximum).",
+  "contact.error.email.invalid": "This address does not look valid.",
+  "contact.error.subject.tooShort": "Please give a subject.",
+  "contact.error.subject.tooLong": "The subject is too long ({max} characters maximum).",
+  "contact.error.message.tooShort": "A few more words ({min} characters minimum).",
+  "contact.error.message.tooLong": "The message is too long ({max} characters maximum).",
+  "contact.error.invalid": "This field is invalid."
+}

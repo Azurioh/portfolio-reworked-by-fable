@@ -1,4 +1,5 @@
 import type { LatestCommitResult } from './github';
+import { getLocale, t, translate } from './i18n';
 import type { Smooth } from './smooth';
 
 /**
@@ -14,7 +15,7 @@ export function setupMenu(smooth: Smooth): void {
 
   const setOpen = (open: boolean): void => {
     burger.setAttribute('aria-expanded', String(open));
-    burger.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+    burger.setAttribute('aria-label', open ? t('menu.close') : t('menu.open'));
     if (open) {
       menu.hidden = false;
       requestAnimationFrame(() => menu.classList.add('is-open'));
@@ -28,6 +29,7 @@ export function setupMenu(smooth: Smooth): void {
     }
   };
 
+  burger.setAttribute('aria-label', t('menu.open'));
   burger.addEventListener('click', () => {
     setOpen(burger.getAttribute('aria-expanded') !== 'true');
   });
@@ -133,7 +135,7 @@ export function setupQuotes(): void {
   const setPaused = (value: boolean): void => {
     paused = value;
     toggle.setAttribute('aria-pressed', String(value));
-    toggle.setAttribute('aria-label', value ? 'Reprendre la lecture' : 'Mettre en pause');
+    toggle.setAttribute('aria-label', value ? t('quotes.resume') : t('quotes.pause'));
   };
 
   prev.addEventListener('click', () => show(index - 1));
@@ -181,7 +183,7 @@ const DAY_MS = 86_400_000;
 
 const formatRelative = (date: Date): string => {
   const diff = Date.now() - date.getTime();
-  const rtf = new Intl.RelativeTimeFormat('fr', { numeric: 'auto' });
+  const rtf = new Intl.RelativeTimeFormat(getLocale(), { numeric: 'auto' });
   if (diff < HOUR_MS) {
     return rtf.format(-Math.max(1, Math.round(diff / MINUTE_MS)), 'minute');
   }
@@ -202,11 +204,11 @@ export function renderTerminalCommit(params: { result: LatestCommitResult }): vo
   }
   const { result } = params;
   if (result.status === 'unavailable') {
-    out.textContent = 'fatal: api.github.com injoignable · voir github.com/azurioh';
+    out.textContent = t('terminal.unavailable');
     return;
   }
   if (result.status === 'none') {
-    out.textContent = 'aucun push public récent · voir github.com/azurioh';
+    out.textContent = t('terminal.none');
     return;
   }
   const { commit } = result;
@@ -229,13 +231,13 @@ export function setupLocalTime(): void {
   if (!el) {
     return;
   }
-  const fmt = new Intl.DateTimeFormat('fr-FR', {
+  const fmt = new Intl.DateTimeFormat(getLocale(), {
     hour: '2-digit',
     minute: '2-digit',
     timeZone: 'Europe/Paris',
   });
   const tick = (): void => {
-    el.textContent = `Besançon, ${fmt.format(new Date())}`;
+    el.textContent = translate({ key: 'footer.localTime', vars: { time: fmt.format(new Date()) } });
   };
   tick();
   window.setInterval(tick, 30_000);

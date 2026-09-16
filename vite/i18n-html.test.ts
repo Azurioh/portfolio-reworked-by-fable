@@ -59,11 +59,19 @@ describe('buildMeta', () => {
     expect(meta.lang).toBe('en');
   });
 
-  it('lists the other available locales as alternates', () => {
+  it('lists the other available locales as alternates, with an upper-case label', () => {
     expect(buildMeta({ locale: fr, available: locales }).alternates).toEqual([
-      { code: 'en', htmlLang: 'en', path: '/en/', url: `${SITE_URL}/en/` },
+      { code: 'en', htmlLang: 'en', path: '/en/', url: `${SITE_URL}/en/`, label: 'EN' },
     ]);
-    expect(buildMeta({ locale: fr, available: [fr] }).alternates).toEqual([]);
+  });
+
+  it('exposes the first alternate as the language switcher target', () => {
+    expect(buildMeta({ locale: fr, available: locales }).alternate).toMatchObject({ path: '/en/', label: 'EN' });
+    expect(buildMeta({ locale: en, available: locales }).alternate).toMatchObject({ path: '/', label: 'FR' });
+  });
+
+  it('throws when the page has no alternate locale to link to', () => {
+    expect(() => buildMeta({ locale: fr, available: [fr] })).toThrow(/alternate locale/);
   });
 
   it('renders meta values through the template', () => {
