@@ -37,7 +37,7 @@
     "firstName": "Alan",
     "lastName": "Cunin",
     "eyebrow": "<b>~/alan</b> · epitech · promo 2028 · besançon",
-    "role": "Étudiant en troisième année à Epitech, capitaine du AWS Cloud Club, dirigeant d'une association esport. J'apprends <em>en construisant</em> — et je dors peu quand il y a un hackathon.",
+    "role": "Étudiant à Epitech, capitaine du AWS Cloud Club, dirigeant d'une association esport. J'apprends <em>en construisant</em> — et je dors peu quand il y a un hackathon.",
     "terminal": {
       "whoami": "alan · étudiant epitech · cloud &amp; devops · agents ia",
       "commitPending": "connexion à github…"
