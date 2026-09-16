@@ -7,6 +7,8 @@ const EMBED_DESCRIPTION_MAX_LENGTH = 4096;
 const EMBED_COLOR = 0x8b7cff;
 const UNKNOWN_IP_LABEL = 'inconnue';
 const ELLIPSIS = '…';
+const MENTION_EVERYONE = '@everyone';
+const MENTION_CONTENT = `${MENTION_EVERYONE} nouveau message depuis le portfolio`;
 
 const truncate = (params: { text: string; max: number }): string => {
   if (params.text.length <= params.max) {
@@ -25,7 +27,8 @@ export class DiscordWebhookNotifier implements ContactNotifier {
 
   async notify(message: ReceivedContactMessage): Promise<void> {
     const payload = {
-      allowed_mentions: { parse: [] },
+      content: MENTION_CONTENT,
+      allowed_mentions: { parse: ['everyone'] },
       embeds: [
         {
           title: message.subject,
