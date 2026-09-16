@@ -10,6 +10,7 @@ cp .env.example .env   # then fill DISCORD_WEBHOOK_URL
 pnpm dev               # Vite on http://localhost:5173 (proxies /api → :8787)
 pnpm dev:server        # Hono API on http://localhost:8787, in a second terminal
 pnpm build             # type-check + build the site in dist/ and the server in dist-server/
+pnpm test              # vitest (i18n template rendering)
 pnpm start             # serve dist/ and /api/contact from dist-server/ (needs the env vars)
 pnpm preview           # Vite preview of dist/ only (no API)
 ```
@@ -39,7 +40,10 @@ The Hono handler (`server/app.ts` and `server/contact/`) only uses Web-standard 
 
 ## Structure
 
-- `index.html` — all content, in French (sections are "planches" I → VI).
+- `index.html` — locale-agnostic template of the whole page (sections are "planches" I → VI). Every visible string, `alt`, `aria-label`, `placeholder` and head tag is a `{{ section.key }}` placeholder; `{{ meta.lang }}`, `{{ meta.url }}` and `{{ meta.ogLocale }}` come from the locale config.
+- `src/locales/index.ts` — locale list (`code`, public `path`, `htmlLang`, `ogLocale`), `defaultLocale` and `SITE_URL`.
+- `src/locales/<code>/page.json` — one dictionary per locale, nested by section (`nav`, `hero`, `record`, …), values are trusted HTML (`<em>`, `&nbsp;` allowed). Only `fr` exists for now.
+- `vite/i18n-html.ts` — Vite plugin that renders the template once per locale that has a dictionary: `/` → `dist/index.html`, `/<code>/` → `dist/<code>/index.html`, same hashed assets. In dev, `/` and `/<code>/` are rendered on the fly (`/<code>/` is a 404 until its dictionary exists). A missing key or a leftover `{{` fails the build. Unit tests in `vite/i18n-html.test.ts` (`pnpm test`).
 - `src/style.css` — design tokens, layout, responsive rules, reduced-motion fallbacks.
 - `src/main.ts` — boot sequence (intro, smooth scroll, scenes).
 - `src/lib/smooth.ts` — Lenis + GSAP ticker sync.

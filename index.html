@@ -1,18 +1,18 @@
 <!doctype html>
-<html lang="fr">
+<html lang="{{ meta.lang }}">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>Alan Cunin — Étudiant Epitech, cloud, hackathons &amp; esport</title>
+    <title>{{ head.title }}</title>
     <meta
       name="description"
-      content="Alan Cunin, étudiant Epitech à Mulhouse, capitaine du AWS Cloud Club, dirigeant d'une association esport à Besançon. 1er mondial au Clash of Agents AWS 2026."
+      content="{{ head.description }}"
     />
     <meta name="theme-color" content="#0a0e1a" />
-    <meta property="og:title" content="Alan Cunin — Étudiant Epitech, cloud, hackathons &amp; esport" />
+    <meta property="og:title" content="{{ head.title }}" />
     <meta
       property="og:description"
-      content="J'apprends en construisant. De 2 min 20 à 10 secondes : le record du Clash of Agents AWS."
+      content="{{ head.ogDescription }}"
     />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="/img/portrait.webp" />
@@ -32,7 +32,7 @@
     <link rel="stylesheet" href="/src/style.css" />
   </head>
   <body>
-    <a class="skip" href="#atelier">Aller au contenu</a>
+    <a class="skip" href="#atelier">{{ nav.skip }}</a>
 
     <canvas id="sky" class="sky" aria-hidden="true"></canvas>
     <div class="orb" aria-hidden="true"></div>
@@ -41,39 +41,39 @@
 
     <div class="intro" aria-hidden="true">
       <div class="intro__word">
-        <span class="intro__line"><span>Alan</span></span>
-        <span class="intro__line intro__line--it"><span>Cunin</span></span>
+        <span class="intro__line"><span>{{ hero.firstName }}</span></span>
+        <span class="intro__line intro__line--it"><span>{{ hero.lastName }}</span></span>
       </div>
       <div class="intro__bar"><i></i></div>
     </div>
 
     <header class="nav">
-      <a class="nav__logo" href="#hero" data-cursor="link" aria-label="Retour en haut">
+      <a class="nav__logo" href="#hero" data-cursor="link" aria-label="{{ nav.logoLabel }}">
         <span class="nav__mark">A</span><span class="nav__mark nav__mark--it">C</span>
       </a>
-      <nav class="nav__links" aria-label="Navigation principale">
-        <a href="#record" data-cursor="link"><span>01</span>Le record</a>
-        <a href="#atelier" data-cursor="link"><span>02</span>Ce qui m'anime</a>
-        <a href="#pieces" data-cursor="link"><span>03</span>Les pièces</a>
-        <a href="#parcours" data-cursor="link"><span>04</span>Le parcours</a>
-        <a href="#voix" data-cursor="link"><span>05</span>Les voix</a>
+      <nav class="nav__links" aria-label="{{ nav.linksLabel }}">
+        <a href="#record" data-cursor="link"><span>01</span>{{ nav.items.record }}</a>
+        <a href="#atelier" data-cursor="link"><span>02</span>{{ nav.items.atelier }}</a>
+        <a href="#pieces" data-cursor="link"><span>03</span>{{ nav.items.pieces }}</a>
+        <a href="#parcours" data-cursor="link"><span>04</span>{{ nav.items.parcours }}</a>
+        <a href="#voix" data-cursor="link"><span>05</span>{{ nav.items.voix }}</a>
       </nav>
-      <a class="nav__cta" href="#contact" data-cursor="link" data-magnetic>On se parle&nbsp;?</a>
-      <button class="nav__burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Ouvrir le menu">
+      <a class="nav__cta" href="#contact" data-cursor="link" data-magnetic>{{ nav.cta }}</a>
+      <button class="nav__burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="{{ nav.burgerLabel }}">
         <i></i><i></i>
       </button>
     </header>
 
     <div class="menu" id="menu" hidden>
-      <nav class="menu__links" aria-label="Menu mobile">
-        <a href="#record"><span>01</span>Le record</a>
-        <a href="#atelier"><span>02</span>Ce qui m'anime</a>
-        <a href="#pieces"><span>03</span>Les pièces</a>
-        <a href="#parcours"><span>04</span>Le parcours</a>
-        <a href="#voix"><span>05</span>Les voix</a>
-        <a href="#contact"><span>06</span>Correspondance</a>
+      <nav class="menu__links" aria-label="{{ menu.linksLabel }}">
+        <a href="#record"><span>01</span>{{ nav.items.record }}</a>
+        <a href="#atelier"><span>02</span>{{ nav.items.atelier }}</a>
+        <a href="#pieces"><span>03</span>{{ nav.items.pieces }}</a>
+        <a href="#parcours"><span>04</span>{{ nav.items.parcours }}</a>
+        <a href="#voix"><span>05</span>{{ nav.items.voix }}</a>
+        <a href="#contact"><span>06</span>{{ nav.items.contact }}</a>
       </nav>
-      <p class="menu__foot">alancunin@gmail.com · Mulhouse / Besançon</p>
+      <p class="menu__foot">{{ menu.foot }}</p>
     </div>
 
     <main id="main">
@@ -81,31 +81,29 @@
       <section class="hero" id="hero">
         <p class="hero__eyebrow">
           <span class="pulse" aria-hidden="true"></span>
-          <b>~/alan</b> · epitech · promo 2028 · besançon
+          {{ hero.eyebrow }}
         </p>
 
         <h1 class="hero__title">
-          <span class="hero__word" data-split="chars">Alan</span>
-          <span class="hero__word hero__word--it" data-split="chars">Cunin</span>
+          <span class="hero__word" data-split="chars">{{ hero.firstName }}</span>
+          <span class="hero__word hero__word--it" data-split="chars">{{ hero.lastName }}</span>
         </h1>
 
         <p class="hero__role" data-split="lines">
-          Étudiant en troisième année à Epitech, capitaine du AWS Cloud Club, dirigeant d'une
-          association esport. J'apprends <em>en construisant</em> — et je dors peu quand il y a un
-          hackathon.
+          {{ hero.role }}
         </p>
 
         <div class="term hero__term" data-terminal>
           <div class="term__bar"><i></i><i></i><i></i><span class="term__title">alan@besancon — zsh</span></div>
           <pre class="term__body"><span class="term__p">$</span> whoami
-<span class="term__o">alan · étudiant epitech · cloud &amp; devops · agents ia</span>
+<span class="term__o">{{ hero.terminal.whoami }}</span>
 <span class="term__p">$</span> git log -1 --oneline
-<span class="term__o" data-terminal-commit>connexion à github…</span><span class="term__cursor"></span></pre>
+<span class="term__o" data-terminal-commit>{{ hero.terminal.commitPending }}</span><span class="term__cursor"></span></pre>
         </div>
 
         <figure class="lens" data-tilt>
           <div class="lens__inner">
-            <img class="lens__img" src="/img/portrait.webp" alt="Portrait d'Alan Cunin" width="1000" height="1000" fetchpriority="high" />
+            <img class="lens__img" src="/img/portrait.webp" alt="{{ hero.portraitAlt }}" width="1000" height="1000" fetchpriority="high" />
           </div>
           <svg class="lens__ring" viewBox="0 0 200 200" aria-hidden="true">
             <defs>
@@ -113,20 +111,20 @@
             </defs>
             <text>
               <textPath href="#ringPath">
-                Cloud &amp; DevOps · Hackathons · Esport · Pédagogie · Métal &amp; rock · Franche-Comté ·
+                {{ hero.ring }}
               </textPath>
             </text>
           </svg>
         </figure>
 
         <div class="hero__meta">
-          <a class="hero__link" href="https://github.com/azurioh" target="_blank" rel="noopener" data-cursor="link">GitHub</a>
-          <a class="hero__link" href="https://www.linkedin.com/in/alancunin" target="_blank" rel="noopener" data-cursor="link">LinkedIn</a>
-          <a class="hero__link" href="/cv.pdf" target="_blank" rel="noopener" data-cursor="link">CV</a>
+          <a class="hero__link" href="https://github.com/azurioh" target="_blank" rel="noopener" data-cursor="link">{{ links.github }}</a>
+          <a class="hero__link" href="https://www.linkedin.com/in/alancunin" target="_blank" rel="noopener" data-cursor="link">{{ links.linkedin }}</a>
+          <a class="hero__link" href="/cv.pdf" target="_blank" rel="noopener" data-cursor="link">{{ links.cv }}</a>
         </div>
 
-        <a class="hero__scroll" href="#record" data-cursor="link" aria-label="Défiler vers le record">
-          <span>Défiler</span>
+        <a class="hero__scroll" href="#record" data-cursor="link" aria-label="{{ hero.scrollLabel }}">
+          <span>{{ hero.scroll }}</span>
           <i></i>
         </a>
       </section>
@@ -135,42 +133,38 @@
       <section class="record" id="record">
         <div class="record__pin">
           <div class="record__text">
-            <p class="plate"><span>01</span> Le record</p>
-            <h2 class="h2" data-split="lines">De 2 min 20 à <em>10 secondes</em>.</h2>
+            <p class="plate"><span>01</span> {{ record.plate }}</p>
+            <h2 class="h2" data-split="lines">{{ record.title }}</h2>
             <p class="record__p" data-split="lines">
-              Strasbourg, 18 mars 2026. Le Clash of Agents d'AWS&nbsp;: onze heures pour faire collaborer
-              des agents IA autour d'une animalerie en ligne. Mon premier prototype répondait en
-              <b>2 min 20</b>. Inacceptable. J'ai passé la nuit à reprendre chaque process à la main.
+              {{ record.paragraphs.0 }}
             </p>
             <p class="record__p" data-split="lines">
-              Au matin&nbsp;: <b>10 s</b>. Les organisateurs ont cru à une anomalie et ont audité mon
-              code. Rien à signaler. Premier prix, remis par le CTO d'AWS France, et un record
-              international. Ce n'est pas du génie, c'est de l'acharnement.
+              {{ record.paragraphs.1 }}
             </p>
           </div>
 
-          <div class="bench" role="img" aria-label="Temps de réponse moyen de l'agent : 2 minutes 20 avant, 10 secondes après, soit 14 fois plus rapide.">
+          <div class="bench" role="img" aria-label="{{ record.bench.ariaLabel }}">
             <div class="term__bar"><i></i><i></i><i></i><span class="term__title">latency-bench · clash-of-agents</span></div>
             <div class="bench__body">
-              <p class="bench__label">Temps de réponse moyen</p>
+              <p class="bench__label">{{ record.bench.label }}</p>
               <div class="bench__row">
-                <span class="bench__k">avant</span>
+                <span class="bench__k">{{ record.bench.before }}</span>
                 <div class="bench__track"><i class="bench__fill bench__fill--before"></i></div>
-                <span class="bench__v bench__v--before">2 min 20</span>
+                <span class="bench__v bench__v--before">{{ record.bench.beforeValue }}</span>
               </div>
               <div class="bench__row bench__row--after">
-                <span class="bench__k">après</span>
+                <span class="bench__k">{{ record.bench.after }}</span>
                 <div class="bench__track"><i class="bench__fill bench__fill--after"></i></div>
-                <span class="bench__v bench__v--after">10 s</span>
+                <span class="bench__v bench__v--after">{{ record.bench.afterValue }}</span>
               </div>
               <div class="bench__big">
                 <span class="bench__mult">×<b data-mult>1</b></span>
-                <span class="bench__sub">plus rapide, en une nuit</span>
+                <span class="bench__sub">{{ record.bench.multiplier }}</span>
               </div>
               <ul class="bench__meta">
-                <li><b>1<sup>er</sup></b><span>international</span></li>
-                <li><b>0</b><span>irrégularité à l'audit</span></li>
-                <li><b>11 h</b><span>de compétition</span></li>
+                <li><b>{{ record.bench.stats.0.value }}</b><span>{{ record.bench.stats.0.label }}</span></li>
+                <li><b>{{ record.bench.stats.1.value }}</b><span>{{ record.bench.stats.1.label }}</span></li>
+                <li><b>{{ record.bench.stats.2.value }}</b><span>{{ record.bench.stats.2.label }}</span></li>
               </ul>
             </div>
           </div>
@@ -179,69 +173,61 @@
 
       <!-- ============ 02 · CE QUI M'ANIME ============ -->
       <section class="atelier" id="atelier">
-        <p class="plate"><span>02</span> Ce qui m'anime</p>
+        <p class="plate"><span>02</span> {{ atelier.plate }}</p>
         <h2 class="h2" data-split="lines">
-          Quatre <em>obsessions</em>, un seul cerveau.
+          {{ atelier.title }}
         </h2>
 
         <ol class="craft">
           <li class="craft__row" data-cursor="expand">
             <span class="craft__num">01</span>
-            <h3 class="craft__title">Le cloud, en communauté</h3>
+            <h3 class="craft__title">{{ atelier.items.0.title }}</h3>
             <p class="craft__desc">
-              Capitaine du AWS Cloud Club de Mulhouse depuis 2025. J'anime des workshops sur
-              l'écosystème AWS et je monte des talks avec des Developer Advocates. Distinction Captain
-              Silver en 2026.
+              {{ atelier.items.0.desc }}
             </p>
-            <ul class="craft__tags"><li>AWS</li><li>Bedrock</li><li>Docker</li><li>Terraform</li><li>Workshops</li></ul>
+            <ul class="craft__tags"><li>{{ atelier.items.0.tags.0 }}</li><li>{{ atelier.items.0.tags.1 }}</li><li>{{ atelier.items.0.tags.2 }}</li><li>{{ atelier.items.0.tags.3 }}</li><li>{{ atelier.items.0.tags.4 }}</li></ul>
           </li>
           <li class="craft__row" data-cursor="expand">
             <span class="craft__num">02</span>
-            <h3 class="craft__title">Les hackathons</h3>
+            <h3 class="craft__title">{{ atelier.items.1.title }}</h3>
             <p class="craft__desc">
-              Lauréat de la Nuit de l'info, BaselHack 2024 et 2025 avec la Team NFT, Game Jams Epitech,
-              prix CARE Alsace au Hacking Health Camp avec VisiSurg. Une nuit blanche, une équipe, un
-              problème réel&nbsp;: mon format préféré.
+              {{ atelier.items.1.desc }}
             </p>
-            <ul class="craft__tags"><li>Nuit de l'info</li><li>BaselHack</li><li>Game Jam</li><li>Hacking Health</li></ul>
+            <ul class="craft__tags"><li>{{ atelier.items.1.tags.0 }}</li><li>{{ atelier.items.1.tags.1 }}</li><li>{{ atelier.items.1.tags.2 }}</li><li>{{ atelier.items.1.tags.3 }}</li></ul>
           </li>
           <li class="craft__row" data-cursor="expand">
             <span class="craft__num">03</span>
-            <h3 class="craft__title">L'esport, côté coulisses</h3>
+            <h3 class="craft__title">{{ atelier.items.2.title }}</h3>
             <p class="craft__desc">
-              Dirigeant de BSK Esport à Besançon depuis 2022. Direction de l'association, régie de
-              diffusion en direct, outil d'acquisition de données temps réel, événements comme Ici C'est
-              Besac, les Bug Days ou des tournois en médiathèques.
+              {{ atelier.items.2.desc }}
             </p>
-            <ul class="craft__tags"><li>Direction</li><li>Régie live</li><li>Événementiel</li><li>React</li><li>Node.js</li></ul>
+            <ul class="craft__tags"><li>{{ atelier.items.2.tags.0 }}</li><li>{{ atelier.items.2.tags.1 }}</li><li>{{ atelier.items.2.tags.2 }}</li><li>{{ atelier.items.2.tags.3 }}</li><li>{{ atelier.items.2.tags.4 }}</li></ul>
           </li>
           <li class="craft__row" data-cursor="expand">
             <span class="craft__num">04</span>
-            <h3 class="craft__title">Transmettre</h3>
+            <h3 class="craft__title">{{ atelier.items.3.title }}</h3>
             <p class="craft__desc">
-              Assistant pédagogique à Epitech depuis 2025&nbsp;: mentorat sur les projets, conception de
-              modules. Avant ça, trésorier du BDE et fondateur du club gaming. Expliquer, c'est la
-              meilleure façon de vérifier qu'on a compris.
+              {{ atelier.items.3.desc }}
             </p>
-            <ul class="craft__tags"><li>Mentorat</li><li>C/C++</li><li>BDE</li><li>Club gaming</li></ul>
+            <ul class="craft__tags"><li>{{ atelier.items.3.tags.0 }}</li><li>{{ atelier.items.3.tags.1 }}</li><li>{{ atelier.items.3.tags.2 }}</li><li>{{ atelier.items.3.tags.3 }}</li></ul>
           </li>
         </ol>
 
         <div class="method">
           <div class="method__item">
             <span class="method__num">01</span>
-            <h3>Comprendre avant de copier</h3>
-            <p>Si je ne peux pas l'expliquer à un étudiant de première année, je ne l'ai pas compris.</p>
+            <h3>{{ atelier.method.0.title }}</h3>
+            <p>{{ atelier.method.0.desc }}</p>
           </div>
           <div class="method__item">
             <span class="method__num">02</span>
-            <h3>Livrer, puis polir</h3>
-            <p>Un truc qui tourne à 3 h du matin vaut mieux qu'un plan parfait à 9 h. Après, on optimise.</p>
+            <h3>{{ atelier.method.1.title }}</h3>
+            <p>{{ atelier.method.1.desc }}</p>
           </div>
           <div class="method__item">
             <span class="method__num">03</span>
-            <h3>Hors écran</h3>
-            <p>Métal et rock, bénévolat, organisation d'événements. Et une console quand il reste du temps.</p>
+            <h3>{{ atelier.method.2.title }}</h3>
+            <p>{{ atelier.method.2.desc }}</p>
           </div>
         </div>
       </section>
@@ -255,26 +241,24 @@
 
       <!-- ============ 03 · LES PIÈCES ============ -->
       <section class="pieces" id="pieces">
-        <p class="plate"><span>03</span> Les pièces</p>
-        <h2 class="h2" data-split="lines">Trois choses que j'ai <em>construites</em>.</h2>
+        <p class="plate"><span>03</span> {{ pieces.plate }}</p>
+        <h2 class="h2" data-split="lines">{{ pieces.title }}</h2>
 
         <div class="works">
           <article class="work">
             <div class="work__media work__media--visisurg" aria-hidden="true">
               <span class="work__glyph">3D<i>→</i>RAG</span>
-              <span class="work__badge">Prix CARE Alsace</span>
+              <span class="work__badge">{{ pieces.items.0.badge }}</span>
             </div>
             <div class="work__body">
               <span class="work__idx">01</span>
-              <p class="work__cat">Hacking Health Camp · Strasbourg · 2026</p>
-              <h3 class="work__title">VisiSurg</h3>
-              <p class="work__lead">Rendre un compte-rendu opératoire compréhensible par le patient qui l'a subi.</p>
+              <p class="work__cat">{{ pieces.items.0.category }}</p>
+              <h3 class="work__title">{{ pieces.items.0.title }}</h3>
+              <p class="work__lead">{{ pieces.items.0.lead }}</p>
               <p class="work__desc">
-                Un week-end avec des soignants et des designers. Le rapport chirurgical est traduit en une
-                visualisation 3D de l'intervention, et un chatbot RAG répond aux questions du patient en
-                s'appuyant uniquement sur son propre dossier. Prix CARE Alsace à l'arrivée.
+                {{ pieces.items.0.desc }}
               </p>
-              <ul class="work__stack"><li>RAG</li><li>LLM</li><li>3D</li><li>Santé</li></ul>
+              <ul class="work__stack"><li>{{ pieces.items.0.stack.0 }}</li><li>{{ pieces.items.0.stack.1 }}</li><li>{{ pieces.items.0.stack.2 }}</li><li>{{ pieces.items.0.stack.3 }}</li></ul>
             </div>
           </article>
 
@@ -292,17 +276,14 @@
             </div>
             <div class="work__body">
               <span class="work__idx">02</span>
-              <p class="work__cat">CLI open source · 2026</p>
-              <h3 class="work__title">ccprofile</h3>
-              <p class="work__lead">Des profils de plugins et de skills Claude Code, par projet, versionnés dans le dépôt.</p>
+              <p class="work__cat">{{ pieces.items.1.category }}</p>
+              <h3 class="work__title">{{ pieces.items.1.title }}</h3>
+              <p class="work__lead">{{ pieces.items.1.lead }}</p>
               <p class="work__desc">
-                Au lieu de tout activer globalement, on définit des profils (web, backend, mobile…) et on les
-                applique projet par projet. Les skills sont copiées dans le dépôt, les plugins écrits dans la
-                config commitée : n'importe quel coéquipier ou conteneur cloud récupère le bon outillage sans
-                rien installer. Zéro dépendance, Windows / macOS / Linux, détection de dérive incluse.
+                {{ pieces.items.1.desc }}
               </p>
-              <ul class="work__stack"><li>Node.js</li><li>JavaScript</li><li>CLI</li><li>Claude Code</li></ul>
-              <a class="work__link" href="https://github.com/Azurioh/ccprofile" target="_blank" rel="noopener" data-cursor="link">Voir sur GitHub</a>
+              <ul class="work__stack"><li>{{ pieces.items.1.stack.0 }}</li><li>{{ pieces.items.1.stack.1 }}</li><li>{{ pieces.items.1.stack.2 }}</li><li>{{ pieces.items.1.stack.3 }}</li></ul>
+              <a class="work__link" href="https://github.com/Azurioh/ccprofile" target="_blank" rel="noopener" data-cursor="link">{{ pieces.viewOnGithub }}</a>
             </div>
           </article>
 
@@ -323,136 +304,133 @@
             </div>
             <div class="work__body">
               <span class="work__idx">03</span>
-              <p class="work__cat">Framework TypeScript · open source · 2026</p>
-              <h3 class="work__title">discord-kernel</h3>
-              <p class="work__lead">La moitié « framework » d'un bot Discord, sans le bot.</p>
+              <p class="work__cat">{{ pieces.items.2.category }}</p>
+              <h3 class="work__title">{{ pieces.items.2.title }}</h3>
+              <p class="work__lead">{{ pieces.items.2.lead }}</p>
               <p class="work__desc">
-                DSL de commandes typées, guards (permissions, rôles, cooldowns), routage des interactions,
-                composants persistants, i18n qui refuse de démarrer sur une clé dupliquée. Le noyau ne connaît
-                que discord.js : base de données, logger et scheduler sont des ports que l'application
-                implémente. Clean Architecture imposée par le fait même d'être un package.
+                {{ pieces.items.2.desc }}
               </p>
-              <ul class="work__stack"><li>TypeScript</li><li>discord.js</li><li>Clean Architecture</li><li>i18n</li></ul>
-              <a class="work__link" href="https://github.com/Azurioh/discord-kernel" target="_blank" rel="noopener" data-cursor="link">Voir sur GitHub</a>
+              <ul class="work__stack"><li>{{ pieces.items.2.stack.0 }}</li><li>{{ pieces.items.2.stack.1 }}</li><li>{{ pieces.items.2.stack.2 }}</li><li>{{ pieces.items.2.stack.3 }}</li></ul>
+              <a class="work__link" href="https://github.com/Azurioh/discord-kernel" target="_blank" rel="noopener" data-cursor="link">{{ pieces.viewOnGithub }}</a>
             </div>
           </article>
         </div>
 
         <a class="works__more" href="https://github.com/azurioh" target="_blank" rel="noopener" data-cursor="link">
-          <span>Le reste est sur GitHub</span><i>→</i>
+          <span>{{ pieces.more }}</span><i>→</i>
         </a>
       </section>
 
       <!-- ============ 04 · LE PARCOURS ============ -->
       <section class="parcours" id="parcours">
-        <p class="plate"><span>04</span> Le parcours</p>
-        <h2 class="h2" data-split="lines">La technique s'apprend. <em>La persévérance</em> se cultive.</h2>
+        <p class="plate"><span>04</span> {{ parcours.plate }}</p>
+        <h2 class="h2" data-split="lines">{{ parcours.title }}</h2>
 
         <div class="timeline">
           <i class="timeline__progress" aria-hidden="true"></i>
 
           <article class="tl">
-            <time class="tl__when">Mars 2026</time>
-            <h3 class="tl__what">1<sup>er</sup> prix mondial <span>Clash of Agents AWS, Strasbourg</span></h3>
-            <p class="tl__desc">Onze heures, une nuit, un record. Puis le prix CARE Alsace au Hacking Health Camp avec VisiSurg, et la certification Claude Code in Action d'Anthropic la même année.</p>
-            <ul class="tl__tags"><li>Bedrock</li><li>Agents IA</li></ul>
+            <time class="tl__when">{{ parcours.items.0.when }}</time>
+            <h3 class="tl__what">{{ parcours.items.0.what }} <span>{{ parcours.items.0.where }}</span></h3>
+            <p class="tl__desc">{{ parcours.items.0.desc }}</p>
+            <ul class="tl__tags"><li>{{ parcours.items.0.tags.0 }}</li><li>{{ parcours.items.0.tags.1 }}</li></ul>
           </article>
 
           <article class="tl">
-            <time class="tl__when">2025 → aujourd'hui</time>
-            <h3 class="tl__what">Capitaine <span>AWS Cloud Club Mulhouse</span></h3>
-            <p class="tl__desc">Workshops AWS, talks avec des Developer Advocates, coordination de la communauté étudiante. Captain Silver en 2026.</p>
-            <ul class="tl__tags"><li>AWS</li><li>Communauté</li></ul>
+            <time class="tl__when">{{ parcours.items.1.when }}</time>
+            <h3 class="tl__what">{{ parcours.items.1.what }} <span>{{ parcours.items.1.where }}</span></h3>
+            <p class="tl__desc">{{ parcours.items.1.desc }}</p>
+            <ul class="tl__tags"><li>{{ parcours.items.1.tags.0 }}</li><li>{{ parcours.items.1.tags.1 }}</li></ul>
           </article>
 
           <article class="tl">
-            <time class="tl__when">Fév. 2025 → aujourd'hui</time>
-            <h3 class="tl__what">Assistant pédagogique <span>Epitech Mulhouse</span></h3>
-            <p class="tl__desc">Mentorat technique des étudiants, conception et animation de modules. En parallèle, quelques missions freelance à côté des études.</p>
-            <ul class="tl__tags"><li>Pédagogie</li><li>C/C++</li><li>Mentorat</li></ul>
+            <time class="tl__when">{{ parcours.items.2.when }}</time>
+            <h3 class="tl__what">{{ parcours.items.2.what }} <span>{{ parcours.items.2.where }}</span></h3>
+            <p class="tl__desc">{{ parcours.items.2.desc }}</p>
+            <ul class="tl__tags"><li>{{ parcours.items.2.tags.0 }}</li><li>{{ parcours.items.2.tags.1 }}</li><li>{{ parcours.items.2.tags.2 }}</li></ul>
           </article>
 
           <article class="tl">
-            <time class="tl__when">Juil. → Déc. 2024</time>
-            <h3 class="tl__what">Stage développeur backend <span>AkorD, Mulhouse</span></h3>
-            <p class="tl__desc">Agent IA d'extraction de données PDF, architectures cloud AWS, optimisation de pipelines IA. Mon premier environnement 100&nbsp;% cloud.</p>
-            <ul class="tl__tags"><li>Python</li><li>Node.js</li><li>AWS</li></ul>
+            <time class="tl__when">{{ parcours.items.3.when }}</time>
+            <h3 class="tl__what">{{ parcours.items.3.what }} <span>{{ parcours.items.3.where }}</span></h3>
+            <p class="tl__desc">{{ parcours.items.3.desc }}</p>
+            <ul class="tl__tags"><li>{{ parcours.items.3.tags.0 }}</li><li>{{ parcours.items.3.tags.1 }}</li><li>{{ parcours.items.3.tags.2 }}</li></ul>
           </article>
 
           <article class="tl">
-            <time class="tl__when">Sept. 2023 → 2028</time>
-            <h3 class="tl__what">Programme Grande École <span>Epitech Mulhouse</span></h3>
-            <p class="tl__desc">Trésorier du BDE, fondateur du club gaming. Lauréat de la Nuit de l'info, BaselHack 2024 et 2025, Game Jams. Beaucoup de C, puis de C++, puis de tout le reste.</p>
-            <ul class="tl__tags"><li>C</li><li>C++</li><li>Hackathons</li><li>Associatif</li></ul>
+            <time class="tl__when">{{ parcours.items.4.when }}</time>
+            <h3 class="tl__what">{{ parcours.items.4.what }} <span>{{ parcours.items.4.where }}</span></h3>
+            <p class="tl__desc">{{ parcours.items.4.desc }}</p>
+            <ul class="tl__tags"><li>{{ parcours.items.4.tags.0 }}</li><li>{{ parcours.items.4.tags.1 }}</li><li>{{ parcours.items.4.tags.2 }}</li><li>{{ parcours.items.4.tags.3 }}</li></ul>
           </article>
 
           <article class="tl">
-            <time class="tl__when">Été 2023</time>
-            <h3 class="tl__what">Premier job de dev <span>Création Parquets &amp; Carrelages</span></h3>
-            <p class="tl__desc">Application de génération d'étiquettes produits, puis refonte du site vitrine « Idéal Parquets ». Le moment où le code est devenu un métier.</p>
-            <ul class="tl__tags"><li>Node.js</li><li>Vue.js</li></ul>
+            <time class="tl__when">{{ parcours.items.5.when }}</time>
+            <h3 class="tl__what">{{ parcours.items.5.what }} <span>{{ parcours.items.5.where }}</span></h3>
+            <p class="tl__desc">{{ parcours.items.5.desc }}</p>
+            <ul class="tl__tags"><li>{{ parcours.items.5.tags.0 }}</li><li>{{ parcours.items.5.tags.1 }}</li></ul>
           </article>
 
           <article class="tl">
-            <time class="tl__when">Août 2022 → aujourd'hui</time>
-            <h3 class="tl__what">Dirigeant &amp; développeur <span>BSK Esport, Besançon</span></h3>
-            <p class="tl__desc">Là où tout a commencé : une association esport, un site à faire, une régie live à monter, des événements à organiser. Mon premier terrain de jeu grandeur nature.</p>
-            <ul class="tl__tags"><li>Direction</li><li>Esport</li><li>Événementiel</li></ul>
+            <time class="tl__when">{{ parcours.items.6.when }}</time>
+            <h3 class="tl__what">{{ parcours.items.6.what }} <span>{{ parcours.items.6.where }}</span></h3>
+            <p class="tl__desc">{{ parcours.items.6.desc }}</p>
+            <ul class="tl__tags"><li>{{ parcours.items.6.tags.0 }}</li><li>{{ parcours.items.6.tags.1 }}</li><li>{{ parcours.items.6.tags.2 }}</li></ul>
           </article>
         </div>
 
-        <ul class="laurels" aria-label="Distinctions">
+        <ul class="laurels" aria-label="{{ parcours.laurelsLabel }}">
           <li class="laurel">
             <span class="laurel__idx">// 01</span>
-            <span class="laurel__big">1<sup>er</sup> mondial</span>
-            <span class="laurel__txt">Clash of Agents AWS · Strasbourg · 2026</span>
+            <span class="laurel__big">{{ parcours.laurels.0.big }}</span>
+            <span class="laurel__txt">{{ parcours.laurels.0.text }}</span>
           </li>
           <li class="laurel">
             <span class="laurel__idx">// 02</span>
-            <span class="laurel__big">Prix CARE</span>
-            <span class="laurel__txt">Hacking Health Camp · VisiSurg · 2026</span>
+            <span class="laurel__big">{{ parcours.laurels.1.big }}</span>
+            <span class="laurel__txt">{{ parcours.laurels.1.text }}</span>
           </li>
           <li class="laurel">
             <span class="laurel__idx">// 03</span>
-            <span class="laurel__big">Captain Silver</span>
-            <span class="laurel__txt">AWS Cloud Club · Mulhouse · 2026</span>
+            <span class="laurel__big">{{ parcours.laurels.2.big }}</span>
+            <span class="laurel__txt">{{ parcours.laurels.2.text }}</span>
           </li>
           <li class="laurel">
             <span class="laurel__idx">// 04</span>
-            <span class="laurel__big">Lauréat</span>
-            <span class="laurel__txt">Nuit de l'info · BaselHack · Game Jams Epitech</span>
+            <span class="laurel__big">{{ parcours.laurels.3.big }}</span>
+            <span class="laurel__txt">{{ parcours.laurels.3.text }}</span>
           </li>
         </ul>
       </section>
 
       <!-- ============ 05 · LES VOIX ============ -->
       <section class="voix" id="voix">
-        <p class="plate"><span>05</span> Les voix</p>
+        <p class="plate"><span>05</span> {{ voix.plate }}</p>
 
         <div class="quotes" data-quotes>
           <blockquote class="quote is-active">
-            <p>« Alan est un développeur à la motivation inébranlable. Il a su persévérer, apprendre à coder proprement, comprendre les défis liés à l'optimisation et s'adapter à notre environnement entièrement basé sur le cloud. »</p>
-            <footer><b>Jonathan Cohen</b> — Chef de projet, AkorD</footer>
+            <p>{{ voix.items.0.text }}</p>
+            <footer><b>{{ voix.items.0.author }}</b> — {{ voix.items.0.role }}</footer>
           </blockquote>
           <blockquote class="quote">
-            <p>« Alan a apporté toute son expertise et son leadership au développement de notre association : site internet, régie pour la diffusion en direct, organisation d'événements. Professionnel et autonome. »</p>
-            <footer><b>Deniz Gecici</b> — Président, BSK Esport</footer>
+            <p>{{ voix.items.1.text }}</p>
+            <footer><b>{{ voix.items.1.author }}</b> — {{ voix.items.1.role }}</footer>
           </blockquote>
           <blockquote class="quote">
-            <p>« Nous avons particulièrement apprécié sa capacité à contourner les obstacles techniques tout en respectant les délais. Un développeur fiable, compétent et proactif. »</p>
-            <footer><b>Sophie Lamboley</b> — Responsable marketing, Création Parquets &amp; Carrelages</footer>
+            <p>{{ voix.items.2.text }}</p>
+            <footer><b>{{ voix.items.2.author }}</b> — {{ voix.items.2.role }}</footer>
           </blockquote>
         </div>
 
         <div class="quotes__ctl" data-quotes-ctl>
-          <button class="quotes__btn" type="button" data-quotes-prev aria-label="Témoignage précédent" data-cursor="link">
+          <button class="quotes__btn" type="button" data-quotes-prev aria-label="{{ voix.prevLabel }}" data-cursor="link">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
           </button>
-          <button class="quotes__btn" type="button" data-quotes-toggle aria-label="Mettre en pause" aria-pressed="false" data-cursor="link">
+          <button class="quotes__btn" type="button" data-quotes-toggle aria-label="{{ voix.pauseLabel }}" aria-pressed="false" data-cursor="link">
             <svg class="quotes__ico-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14" /></svg>
             <svg class="quotes__ico-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5l11 7-11 7z" /></svg>
           </button>
-          <button class="quotes__btn" type="button" data-quotes-next aria-label="Témoignage suivant" data-cursor="link">
+          <button class="quotes__btn" type="button" data-quotes-next aria-label="{{ voix.nextLabel }}" data-cursor="link">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
           </button>
           <span class="quotes__count" aria-live="polite"><b data-quotes-current>1</b> / <span data-quotes-total>3</span></span>
@@ -462,46 +440,45 @@
 
       <!-- ============ 06 · CORRESPONDANCE ============ -->
       <section class="contact" id="contact">
-        <p class="plate"><span>06</span> Correspondance</p>
+        <p class="plate"><span>06</span> {{ contact.plate }}</p>
         <h2 class="contact__title" data-split="lines">
-          On se <em>parle</em>&nbsp;?
+          {{ contact.title }}
         </h2>
         <p class="contact__lead" data-split="lines">
-          Un hackathon à monter, un talk AWS, une question sur Epitech, un projet qui vous obsède aussi&nbsp;:
-          écrivez-moi, je réponds vite.
+          {{ contact.lead }}
         </p>
 
         <form class="cform" data-contact novalidate>
           <div class="cform__grid">
             <div class="cform__field">
-              <label class="cform__label" for="cf-name">Nom</label>
+              <label class="cform__label" for="cf-name">{{ contact.form.name }}</label>
               <input class="cform__input" id="cf-name" name="name" type="text" autocomplete="name" required maxlength="80" />
               <p class="cform__error" data-error-for="name" aria-live="polite"></p>
             </div>
             <div class="cform__field">
-              <label class="cform__label" for="cf-email">Email</label>
+              <label class="cform__label" for="cf-email">{{ contact.form.email }}</label>
               <input class="cform__input" id="cf-email" name="email" type="email" autocomplete="email" inputmode="email" required maxlength="120" />
               <p class="cform__error" data-error-for="email" aria-live="polite"></p>
             </div>
             <div class="cform__field cform__field--full">
-              <label class="cform__label" for="cf-subject">Sujet</label>
-              <input class="cform__input" id="cf-subject" name="subject" type="text" required maxlength="120" placeholder="Un hackathon, un talk, un projet…" />
+              <label class="cform__label" for="cf-subject">{{ contact.form.subject }}</label>
+              <input class="cform__input" id="cf-subject" name="subject" type="text" required maxlength="120" placeholder="{{ contact.form.subjectPlaceholder }}" />
               <p class="cform__error" data-error-for="subject" aria-live="polite"></p>
             </div>
             <div class="cform__field cform__field--full">
-              <label class="cform__label" for="cf-message">Message</label>
+              <label class="cform__label" for="cf-message">{{ contact.form.message }}</label>
               <textarea class="cform__input cform__input--area" id="cf-message" name="message" rows="6" required maxlength="4000"></textarea>
-              <p class="cform__hint">Quelques lignes suffisent. Je réponds vite.</p>
+              <p class="cform__hint">{{ contact.form.hint }}</p>
               <p class="cform__error" data-error-for="message" aria-live="polite"></p>
             </div>
           </div>
           <div class="cform__trap" aria-hidden="true">
-            <label for="cf-website">Site web</label>
+            <label for="cf-website">{{ contact.form.website }}</label>
             <input id="cf-website" name="website" type="text" tabindex="-1" autocomplete="off" />
           </div>
           <div class="cform__foot">
             <button class="cform__submit" type="submit" data-cursor="link" data-magnetic>
-              <span class="cform__submit-txt">Envoyer</span>
+              <span class="cform__submit-txt">{{ contact.form.submit }}</span>
               <span class="cform__submit-busy" aria-hidden="true"></span>
             </button>
             <p class="cform__status" data-status role="status" aria-live="polite"></p>
@@ -509,18 +486,18 @@
         </form>
 
         <ul class="contact__links">
-          <li><a href="https://www.linkedin.com/in/alancunin" target="_blank" rel="noopener" data-cursor="link">LinkedIn</a></li>
-          <li><a href="https://github.com/azurioh" target="_blank" rel="noopener" data-cursor="link">GitHub</a></li>
-          <li><a href="/cv.pdf" target="_blank" rel="noopener" data-cursor="link">CV</a></li>
-          <li><a href="https://www.malt.fr/profile/alancunin" target="_blank" rel="noopener" data-cursor="link">Malt</a></li>
+          <li><a href="https://www.linkedin.com/in/alancunin" target="_blank" rel="noopener" data-cursor="link">{{ links.linkedin }}</a></li>
+          <li><a href="https://github.com/azurioh" target="_blank" rel="noopener" data-cursor="link">{{ links.github }}</a></li>
+          <li><a href="/cv.pdf" target="_blank" rel="noopener" data-cursor="link">{{ links.cv }}</a></li>
+          <li><a href="https://www.malt.fr/profile/alancunin" target="_blank" rel="noopener" data-cursor="link">{{ links.malt }}</a></li>
         </ul>
-        <p class="contact__aside">Pour une mission freelance, c'est plutôt par ici&nbsp;: <a href="https://azu-dev.fr" target="_blank" rel="noopener" data-cursor="link">azu-dev.fr</a>.</p>
+        <p class="contact__aside">{{ contact.asideBefore }}<a href="https://azu-dev.fr" target="_blank" rel="noopener" data-cursor="link">azu-dev.fr</a>{{ contact.asideAfter }}</p>
       </section>
     </main>
 
     <footer class="foot">
-      <p>© 2026 Alan Cunin — Besançon &amp; Mulhouse.</p>
-      <p>Fait à la main, tard le soir. <span class="foot__time" data-local-time>—</span></p>
+      <p>{{ footer.copyright }}</p>
+      <p>{{ footer.made }} <span class="foot__time" data-local-time>—</span></p>
     </footer>
 
     <script type="module" src="/src/main.ts"></script>
