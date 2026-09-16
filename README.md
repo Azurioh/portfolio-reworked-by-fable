@@ -10,7 +10,7 @@ cp .env.example .env   # then fill DISCORD_WEBHOOK_URL
 pnpm dev               # Vite on http://localhost:5173 (proxies /api → :8787)
 pnpm dev:server        # Hono API on http://localhost:8787, in a second terminal
 pnpm build             # type-check + build the site in dist/ and the server in dist-server/
-pnpm test              # vitest (i18n rendering, dictionary parity, runtime strings)
+pnpm test              # vitest (i18n rendering, dictionary parity, runtime strings, HTTP redirects/caching/headers)
 pnpm start             # serve dist/ and /api/contact from dist-server/ (needs the env vars)
 pnpm preview           # Vite preview of dist/ only (no API)
 pnpm fonts             # regenerate public/fonts/ and src/fonts.css (committed); needs macOS for the Menlo fallback metrics
@@ -25,11 +25,23 @@ pnpm fonts             # regenerate public/fonts/ and src/fonts.css (committed);
 | `STATIC_DIR` | server | no (`dist`) | Directory of the built site served next to the API. |
 | `VITE_CONTACT_ENDPOINT` | client | no | Absolute URL of another endpoint accepting the same JSON POST; defaults to same-origin `/api/contact`. |
 
-The server fails fast at boot when `DISCORD_WEBHOOK_URL` is missing or invalid.
+The server fails fast at boot when `DISCORD_WEBHOOK_URL` is missing or invalid. The Content-Security-Policy only allows `connect-src 'self' https://api.github.com`: when `VITE_CONTACT_ENDPOINT` points to another origin, add that origin to `connectSrc` in `server/shared/http/security-headers.ts` or the browser blocks the request.
 
 ## Contact API
 
 `POST /api/contact` with `Content-Type: application/json` and `{ name, email, subject, message, website }` (`website` is the honeypot, left empty by humans). Answers `{ ok: true }` or `{ ok: false, code, message }` with `400` (validation), `415` (not JSON), `429` (more than 5 messages per hour per IP, read from `x-forwarded-for` / `x-real-ip`) or `502` (Discord unreachable). The browser falls back to a prefilled `mailto:` when delivery fails.
+
+## HTTP caching and headers
+
+`server/shared/http/` holds the origin-level HTTP policy: `redirects.ts` answers `301` for `/index.html` → `/`, `/en` → `/en/` and `/en/index.html` → `/en/`; `security-headers.ts` sets HSTS (one year, subdomains), the CSP, `Permissions-Policy` and `Referrer-Policy: strict-origin-when-cross-origin` on every response; `cache-control.ts` sets `Cache-Control` on successful responses (redirects and 404s carry none). Cloudflare honours these origin headers and compresses at the edge, so the server ships no compression or precompressed files.
+
+| Path | `Cache-Control` |
+|---|---|
+| `/assets/*` (hashed by Vite) | `public, max-age=31536000, immutable` |
+| `/fonts/*`, `/img/*`, `/*.png`, `/favicon.ico`, `/favicon.svg` | `public, max-age=2592000, stale-while-revalidate=86400` |
+| `/sitemap.xml`, `/robots.txt`, `/manifest.webmanifest`, `/cv.pdf` | `public, max-age=3600` |
+| HTML (`/`, `/en/`, `*.html`) | `no-cache` |
+| `/api/*` (any status) | `no-store` |
 
 ## Deploy on Dokploy
 
@@ -57,7 +69,7 @@ The Hono handler (`server/app.ts` and `server/contact/`) only uses Web-standard 
 - `src/lib/ui.ts` — mobile menu, anchors, testimonials rotation, local time.
 - `src/lib/contact.ts` — contact form: inline validation, honeypot, POST to `/api/contact`, mailto fallback.
 - `src/shared/contact/` — Zod schema shared by the browser and the server (`#shared/*` import alias).
-- `server/` — Hono server (`#server/*` alias): `env.ts` (the only reader of `process.env`), `app.ts` (composition), `contact/` split into `domain/`, `application/`, `infrastructure/`, `presentation/`.
+- `server/` — Hono server (`#server/*` alias): `env.ts` (the only reader of `process.env`), `app.ts` (composition), `shared/http/` (redirects, security headers, `Cache-Control`), `contact/` split into `domain/`, `application/`, `infrastructure/`, `presentation/`. HTTP behaviour is tested in `server/app.test.ts`.
 - `public/img/` — optimised WebP assets; `public/cv.pdf`.
 
 ## Locales
