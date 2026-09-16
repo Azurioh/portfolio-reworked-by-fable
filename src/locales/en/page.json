@@ -25,7 +25,8 @@
       "contact": "Correspondence"
     },
     "cta": "Let's talk?",
-    "langLabel": "Lire en français"
+    "langLabel": "Lire en français",
+    "burgerLabel": "Open the menu"
   },
   "menu": {
     "linksLabel": "Mobile menu",
@@ -220,7 +221,8 @@
       }
     ],
     "prevLabel": "Previous testimonial",
-    "nextLabel": "Next testimonial"
+    "nextLabel": "Next testimonial",
+    "pauseLabel": "Pause"
   },
   "contact": {
     "plate": "Correspondence",

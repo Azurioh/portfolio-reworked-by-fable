@@ -25,7 +25,8 @@
       "contact": "Correspondance"
     },
     "cta": "On se parle&nbsp;?",
-    "langLabel": "Read in English"
+    "langLabel": "Read in English",
+    "burgerLabel": "Ouvrir le menu"
   },
   "menu": {
     "linksLabel": "Menu mobile",
@@ -220,7 +221,8 @@
       }
     ],
     "prevLabel": "Témoignage précédent",
-    "nextLabel": "Témoignage suivant"
+    "nextLabel": "Témoignage suivant",
+    "pauseLabel": "Mettre en pause"
   },
   "contact": {
     "plate": "Correspondance",

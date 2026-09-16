@@ -10,16 +10,18 @@
  * The script is idempotent: sharp's encoders are deterministic for a given
  * input and option set, so re-running it regenerates byte-identical output.
  *
- * NOTE: the OG image text uses `Georgia, serif` as a stand-in for the
- * self-hosted Fraunces font. Fraunces lives under public/fonts/ once the
- * fonts task (Task 5) has run; this script was written before that task, so
- * it falls back to a system serif instead of referencing a font file that
- * may not exist yet.
+ * NOTE: the OG image text uses `Georgia, serif` instead of the self-hosted
+ * Fraunces font. sharp rasterises SVG text through librsvg, which resolves
+ * `font-family` against the host's installed system fonts, not the site's
+ * web fonts under public/fonts/ — a self-hosted `@font-face` is invisible to
+ * it. Georgia is a serif that ships on every supported platform, so it is
+ * the closest stand-in available to the rasteriser.
  */
 import { existsSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
+import { ImageBuildError } from './errors/image-build.error.ts';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -161,7 +163,7 @@ async function generateIcons(): Promise<void> {
 async function main(): Promise<void> {
   // Ensure the portrait source exists before doing any work.
   if (!existsSync(PORTRAIT_SOURCE)) {
-    throw new Error(`Portrait source not found: ${PORTRAIT_SOURCE}`);
+    throw new ImageBuildError({ message: `portrait source not found: ${PORTRAIT_SOURCE}` });
   }
 
   await generatePortraitVariants();

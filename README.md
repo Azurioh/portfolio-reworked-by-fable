@@ -13,7 +13,7 @@ pnpm build             # type-check + build the site in dist/ and the server in 
 pnpm test              # vitest (i18n rendering, dictionary parity, runtime strings, HTTP redirects/caching/headers)
 pnpm start             # serve dist/ and /api/contact from dist-server/ (needs the env vars)
 pnpm preview           # Vite preview of dist/ only (no API)
-pnpm images            # regenerate public/img/portrait-*.webp, public/img/og.jpg and the icons (favicon.ico, apple-touch-icon.png, icon-192.png, icon-512.png) from public/img/portrait.webp and public/favicon.svg; committed, cross-platform (sharp)
+pnpm images            # regenerate public/img/portrait-*.webp, public/img/og.jpg and the icons (favicon.ico, apple-touch-icon.png, icon-192.png, icon-512.png) from public/img/portrait.webp and public/favicon.svg; committed. Runs on any platform (sharp), but the committed og.jpg was rendered on macOS — its text is rasterised with the host's system fonts
 pnpm fonts             # regenerate public/fonts/ and src/fonts.css (committed); needs macOS for the Menlo fallback metrics
 ```
 
@@ -50,7 +50,7 @@ The Hono handler (`server/app.ts` and `server/contact/`) only uses Web-standard 
 - `src/lib/contact-issues.ts` — maps a locale-neutral issue of the shared Zod schema (`path` + `code` + bounds) to a runtime key.
 - `vite/i18n-html.ts` — Vite plugin that renders the template once per locale that has a dictionary: `/` → `dist/index.html`, `/<code>/` → `dist/<code>/index.html`, same hashed assets. In dev, `/` and `/<code>/` are rendered on the fly. A missing key, a leftover `{{` or a locale with no alternate to link to fails the build. Unit tests in `vite/i18n-html.test.ts`, dictionary parity in `src/locales/locales.test.ts` (`pnpm test`).
 - `vite/json-ld.ts` — builds the JSON-LD `@graph` (`Person` + `WebSite` + `ProfilePage`) injected into `{{ meta.jsonLd }}`; escapes `<` so no dictionary value can close the `<script>` tag.
-- `scripts/images.ts` (`pnpm images`) — sharp: responsive portrait `srcset` variants (`320`/`480`/`640`/`960`/`1000`w), `public/img/og.jpg`, and the icons (`favicon.ico`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`) from `public/img/portrait.webp` and `public/favicon.svg`. Cross-platform, idempotent, committed.
+- `scripts/images.ts` (`pnpm images`) — sharp: responsive portrait `srcset` variants (`320`/`480`/`640`/`960`/`1000`w), `public/img/og.jpg`, and the icons (`favicon.ico`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`) from `public/img/portrait.webp` and `public/favicon.svg`. Idempotent, committed. Runs on any platform, but the committed `og.jpg` was rendered on macOS — sharp rasterises its SVG text with the host's system fonts, so re-running on another OS would render it with different fonts.
 - `scripts/fonts.ts` (`pnpm fonts`) — copies the self-hosted Fraunces / Instrument Sans / JetBrains Mono `woff2` files into `public/fonts/` and generates `src/fonts.css` with metric-adjusted fallback faces (`size-adjust`, `ascent-override`, `descent-override`). Reads the macOS system Menlo font for the fallback metrics, so it only regenerates on macOS; the outputs are committed and other platforms never need to run it.
 - `src/fonts.css` — generated `@font-face` and fallback-face rules, imported first by `src/style.css`.
 - `src/style.css` — design tokens, layout, responsive rules, reduced-motion fallbacks.

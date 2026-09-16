@@ -80,7 +80,7 @@
       </nav>
       <a class="nav__cta" href="#contact" data-cursor="link" data-magnetic>{{ nav.cta }}</a>
       <a class="nav__lang" href="{{ meta.alternate.path }}" hreflang="{{ meta.alternate.htmlLang }}" lang="{{ meta.alternate.htmlLang }}" aria-label="{{ nav.langLabel }}" data-cursor="link">{{ meta.alternate.label }}</a>
-      <button class="nav__burger" type="button" aria-expanded="false" aria-controls="menu">
+      <button class="nav__burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="{{ nav.burgerLabel }}">
         <i></i><i></i>
       </button>
     </header>
@@ -459,7 +459,7 @@
           <button class="quotes__btn" type="button" data-quotes-prev aria-label="{{ voix.prevLabel }}" data-cursor="link">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
           </button>
-          <button class="quotes__btn" type="button" data-quotes-toggle aria-pressed="false" data-cursor="link">
+          <button class="quotes__btn" type="button" data-quotes-toggle aria-pressed="false" aria-label="{{ voix.pauseLabel }}" data-cursor="link">
             <svg class="quotes__ico-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14" /></svg>
             <svg class="quotes__ico-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5l11 7-11 7z" /></svg>
           </button>
