@@ -1,0 +1,57 @@
+# Alan Cunin — portfolio
+
+Immersive single-page portfolio. Vanilla TypeScript, Vite, GSAP (ScrollTrigger, SplitText) and Lenis, plus a small Hono server that serves the built site and forwards contact-form messages to a Discord webhook.
+
+## Scripts
+
+```bash
+pnpm install
+cp .env.example .env   # then fill DISCORD_WEBHOOK_URL
+pnpm dev               # Vite on http://localhost:5173 (proxies /api → :8787)
+pnpm dev:server        # Hono API on http://localhost:8787, in a second terminal
+pnpm build             # type-check + build the site in dist/ and the server in dist-server/
+pnpm start             # serve dist/ and /api/contact from dist-server/ (needs the env vars)
+pnpm preview           # Vite preview of dist/ only (no API)
+```
+
+## Environment
+
+| Variable | Scope | Required | Purpose |
+|---|---|---|---|
+| `DISCORD_WEBHOOK_URL` | server | yes | Discord → Server settings → Integrations → Webhooks. Messages land there as embeds. |
+| `PORT` | server | no (8787) | HTTP port. |
+| `STATIC_DIR` | server | no (`dist`) | Directory of the built site served next to the API. |
+| `VITE_CONTACT_ENDPOINT` | client | no | Absolute URL of another endpoint accepting the same JSON POST; defaults to same-origin `/api/contact`. |
+
+The server fails fast at boot when `DISCORD_WEBHOOK_URL` is missing or invalid.
+
+## Contact API
+
+`POST /api/contact` with `Content-Type: application/json` and `{ name, email, subject, message, website }` (`website` is the honeypot, left empty by humans). Answers `{ ok: true }` or `{ ok: false, code, message }` with `400` (validation), `415` (not JSON), `429` (more than 5 messages per hour per IP, read from `x-forwarded-for` / `x-real-ip`) or `502` (Discord unreachable). The browser falls back to a prefilled `mailto:` when delivery fails.
+
+## Deploy on Dokploy
+
+1. Create an application from this repository with the **Dockerfile** build type (multi-stage, `node:22-alpine`, non-root, healthcheck on `GET /`).
+2. Add `DISCORD_WEBHOOK_URL` as a secret environment variable. `PORT` and `STATIC_DIR` already default to `8787` and `dist` in the image.
+3. Expose container port `8787` behind Traefik; the rate limiter trusts the first `x-forwarded-for` entry set by the proxy.
+
+The Hono handler (`server/app.ts` and `server/contact/`) only uses Web-standard APIs; only `server/index.ts` (`@hono/node-server`) and the static file middleware are Node-specific, so the API can move to Cloudflare Workers or Vercel by swapping that entry point.
+
+## Structure
+
+- `index.html` — all content, in French (sections are "planches" I → VI).
+- `src/style.css` — design tokens, layout, responsive rules, reduced-motion fallbacks.
+- `src/main.ts` — boot sequence (intro, smooth scroll, scenes).
+- `src/lib/smooth.ts` — Lenis + GSAP ticker sync.
+- `src/lib/animations.ts` — hero reveal, record scene, horizontal gallery, orb journey, reveals.
+- `src/lib/sky.ts` — canvas star field with parallax and meteors.
+- `src/lib/cursor.ts` — custom cursor and magnetic buttons (fine pointers only).
+- `src/lib/ui.ts` — mobile menu, anchors, testimonials rotation, local time.
+- `src/lib/contact.ts` — contact form: inline validation, honeypot, POST to `/api/contact`, mailto fallback.
+- `src/shared/contact/` — Zod schema shared by the browser and the server (`#shared/*` import alias).
+- `server/` — Hono server (`#server/*` alias): `env.ts` (the only reader of `process.env`), `app.ts` (composition), `contact/` split into `domain/`, `application/`, `infrastructure/`, `presentation/`.
+- `public/img/` — optimised WebP assets; `public/cv.pdf`.
+
+## Content sources
+
+Personal portfolio: facts come from alancunin.fr, the CV, the GitHub profile (azurioh) and the Epitech article about the AWS Clash of Agents 2026. The freelance activity (azu-dev.fr) is only linked from the contact section.
