@@ -11,6 +11,7 @@
   --paper: #eef2ff;
   --paper-70: rgba(238, 242, 255, 0.7);
   --paper-50: rgba(238, 242, 255, 0.5);
+  --paper-45: rgba(238, 242, 255, 0.45);
   --paper-15: rgba(238, 242, 255, 0.14);
   --accent: #6ee7f9;
   --accent-2: #a78bfa;
@@ -417,7 +418,7 @@ body::before {
   align-items: center;
   min-height: 44px;
   padding: 0 1.25rem;
-  border: 1px solid var(--paper-50);
+  border: 1px solid var(--paper-45);
   border-radius: 999px;
   font-size: 0.85rem;
   transition:
@@ -1999,7 +2000,7 @@ section {
 }
 
 .cform__input:hover {
-  border-color: var(--paper-50);
+  border-color: var(--paper-45);
 }
 
 .cform__input:focus {
