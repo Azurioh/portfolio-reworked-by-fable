@@ -23,9 +23,16 @@ const URL_PARSE_BASE = 'http://localhost';
 
 const DICTIONARY_SCHEMA = z.record(z.string(), z.unknown());
 
+/** Social preview image (1200×630), served from `public/img/`. */
+const OG_IMAGE_PATH = '/img/og.jpg';
+/** `hreflang` value of the language-neutral fallback link, pointing at the default locale. */
+const X_DEFAULT_HREFLANG = 'x-default';
+const SITE_ROOT_PATH = '/';
+
 interface AlternateLocale {
   readonly code: string;
   readonly htmlLang: string;
+  readonly ogLocale: string;
   readonly path: string;
   readonly url: string;
   /** Text of the language switcher link, e.g. `EN`. */
@@ -40,15 +47,36 @@ interface PageMeta {
   readonly alternates: readonly AlternateLocale[];
   /** Target of the language switcher: the first alternate. */
   readonly alternate: AlternateLocale;
+  /** `<link rel="alternate" hreflang>` tags for every available locale plus `x-default`. */
+  readonly alternateLinks: string;
+  /** Absolute URL of the social preview image. */
+  readonly image: string;
 }
+
+const absoluteUrl = (path: string): string => `${SITE_URL}${path}`;
 
 const toAlternate = (locale: Locale): AlternateLocale => ({
   code: locale.code,
   htmlLang: locale.htmlLang,
+  ogLocale: locale.ogLocale,
   path: locale.path,
-  url: `${SITE_URL}${locale.path}`,
+  url: absoluteUrl(locale.path),
   label: locale.code.toUpperCase(),
 });
+
+const alternateLink = (params: { hreflang: string; url: string }): string =>
+  `<link rel="alternate" hreflang="${params.hreflang}" href="${params.url}" />`;
+
+/**
+ * Renders the `hreflang` link set shared by every page: one link per
+ * available locale, the current one included, and `x-default` on the site
+ * root, where the default locale lives (`src/locales/locales.test.ts` enforces it).
+ */
+const buildAlternateLinks = (available: readonly Locale[]): string =>
+  [
+    ...available.map((locale) => alternateLink({ hreflang: locale.htmlLang, url: absoluteUrl(locale.path) })),
+    alternateLink({ hreflang: X_DEFAULT_HREFLANG, url: absoluteUrl(SITE_ROOT_PATH) }),
+  ].join('\n    ');
 
 /**
  * Builds the locale-derived values exposed to the template under `meta.*`.
@@ -67,9 +95,11 @@ export const buildMeta = (params: { locale: Locale; available: readonly Locale[]
     lang: params.locale.htmlLang,
     ogLocale: params.locale.ogLocale,
     path: params.locale.path,
-    url: `${SITE_URL}${params.locale.path}`,
+    url: absoluteUrl(params.locale.path),
     alternates,
     alternate,
+    alternateLinks: buildAlternateLinks(params.available),
+    image: absoluteUrl(OG_IMAGE_PATH),
   };
 };
 

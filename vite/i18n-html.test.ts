@@ -1,6 +1,30 @@
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { locales, SITE_URL } from '../src/locales/index.ts';
+import { locales, SITE_URL, type Locale } from '../src/locales/index.ts';
 import { buildMeta, renderTemplate } from './i18n-html.ts';
+
+const ROOT = resolve(import.meta.dirname, '..');
+const EMAIL = 'alancunin@gmail.com';
+const GUARDED_EMAIL = `<!--email_off-->${EMAIL}<!--/email_off-->`;
+const JSON_LD_RE = /<script type="application\/ld\+json">([\s\S]*?)<\/script>/;
+const CANONICAL_RE = /<link rel="canonical" href="([^"]*)"/g;
+const HREFLANG_RE = /<link rel="alternate" hreflang="([^"]*)" href="([^"]*)"/g;
+
+const readDictionary = (locale: Locale): Record<string, unknown> =>
+  JSON.parse(readFileSync(resolve(ROOT, 'src/locales', locale.code, 'page.json'), 'utf8')) as Record<string, unknown>;
+
+/** Renders the real `index.html` with the real dictionary, as the plugin does at build time. */
+const renderPage = (locale: Locale): string =>
+  renderTemplate(readFileSync(resolve(ROOT, 'index.html'), 'utf8'), {
+    ...readDictionary(locale),
+    meta: buildMeta({ locale, available: locales }),
+  });
+
+const headOf = (html: string): string => html.slice(0, html.indexOf('</head>'));
+
+const hreflangsOf = (html: string): readonly (readonly [string, string])[] =>
+  [...html.matchAll(HREFLANG_RE)].map(([, hreflang, href]) => [hreflang, href] as const);
 
 describe('renderTemplate', () => {
   it('renders nested keys, with or without whitespace inside the braces', () => {
@@ -61,8 +85,32 @@ describe('buildMeta', () => {
 
   it('lists the other available locales as alternates, with an upper-case label', () => {
     expect(buildMeta({ locale: fr, available: locales }).alternates).toEqual([
-      { code: 'en', htmlLang: 'en', path: '/en/', url: `${SITE_URL}/en/`, label: 'EN' },
+      { code: 'en', htmlLang: 'en', ogLocale: 'en_US', path: '/en/', url: `${SITE_URL}/en/`, label: 'EN' },
     ]);
+  });
+
+  it.each(locales)('renders the same fr, en and x-default hreflang links on the $code page', (locale) => {
+    const { alternateLinks } = buildMeta({ locale, available: locales });
+
+    expect(hreflangsOf(alternateLinks)).toEqual([
+      ['fr', `${SITE_URL}/`],
+      ['en', `${SITE_URL}/en/`],
+      ['x-default', `${SITE_URL}/`],
+    ]);
+  });
+
+  it('only links the locales that have a dictionary, x-default staying on the site root', () => {
+    const { alternateLinks } = buildMeta({ locale: en, available: [en, fr] });
+
+    expect(hreflangsOf(alternateLinks)).toEqual([
+      ['en', `${SITE_URL}/en/`],
+      ['fr', `${SITE_URL}/`],
+      ['x-default', `${SITE_URL}/`],
+    ]);
+  });
+
+  it('exposes the absolute social image URL', () => {
+    expect(buildMeta({ locale: fr, available: locales }).image).toBe(`${SITE_URL}/img/og.jpg`);
   });
 
   it('exposes the first alternate as the language switcher target', () => {
@@ -80,5 +128,42 @@ describe('buildMeta', () => {
     });
 
     expect(html).toBe(`<html lang="en"><a href="${SITE_URL}/en/">`);
+  });
+});
+
+describe('index.html head', () => {
+  it.each(locales)('has exactly one canonical equal to meta.url on the $code page', (locale) => {
+    const head = headOf(renderPage(locale));
+
+    expect([...head.matchAll(CANONICAL_RE)].map(([, href]) => href)).toEqual([
+      buildMeta({ locale, available: locales }).url,
+    ]);
+  });
+
+  it.each(locales)('declares its own og:url and og:locale on the $code page', (locale) => {
+    const head = headOf(renderPage(locale));
+
+    expect(head).toContain(`<meta property="og:url" content="${SITE_URL}${locale.path}" />`);
+    expect(head).toContain(`<meta property="og:locale" content="${locale.ogLocale}" />`);
+    expect(hreflangsOf(head)).toHaveLength(3);
+  });
+
+  it.each(locales)('renders valid JSON-LD with the $code strings', (locale) => {
+    const match = JSON_LD_RE.exec(headOf(renderPage(locale)));
+    if (match === null) {
+      throw new Error('missing JSON-LD block');
+    }
+    const graph = (JSON.parse(match[1]) as { '@graph': readonly Record<string, unknown>[] })['@graph'];
+
+    expect(graph.map((node) => node['@type'])).toEqual(['Person', 'WebSite', 'ProfilePage']);
+    expect(graph[1]).toMatchObject({ inLanguage: locale.htmlLang });
+    expect(graph[2]).toMatchObject({ url: `${SITE_URL}${locale.path}`, inLanguage: locale.htmlLang });
+  });
+
+  it.each(locales)('only exposes the email address inside email_off comments on the $code page', (locale) => {
+    const html = renderPage(locale);
+    const [, body] = html.split('</head>');
+
+    expect(body.split(GUARDED_EMAIL).join('')).not.toContain(EMAIL);
   });
 });

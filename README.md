@@ -40,7 +40,7 @@ The Hono handler (`server/app.ts` and `server/contact/`) only uses Web-standard 
 
 ## Structure
 
-- `index.html` — locale-agnostic template of the whole page (sections are "planches" I → VI). Every visible string, `alt`, `aria-label`, `placeholder` and head tag is a `{{ section.key }}` placeholder; `{{ meta.lang }}`, `{{ meta.url }}`, `{{ meta.ogLocale }}` and the language switcher (`{{ meta.alternate.path }}`, `.htmlLang`, `.label`) come from the locale config.
+- `index.html` — locale-agnostic template of the whole page (sections are "planches" I → VI). Every visible string, `alt`, `aria-label`, `placeholder` and head tag is a `{{ section.key }}` placeholder; `{{ meta.lang }}`, `{{ meta.url }}`, `{{ meta.ogLocale }}`, `{{ meta.alternateLinks }}`, `{{ meta.image }}` and the language switcher (`{{ meta.alternate.path }}`, `.htmlLang`, `.ogLocale`, `.label`) come from the locale config.
 - `src/locales/index.ts` — locale list (`code`, public `path`, `htmlLang`, `ogLocale`), `LocaleCode`, `defaultLocale` and `SITE_URL`.
 - `src/locales/<code>/page.json` — one dictionary per locale, nested by section (`nav`, `hero`, `record`, …), values are trusted HTML (`<em>`, `&nbsp;` allowed). Rendered at build time only, never bundled in the client.
 - `src/locales/<code>/runtime.json` — flat dictionary of the strings set from TypeScript (menu and pause `aria-label`s, form validation and status messages, terminal fallbacks, local-time label). `{name}` placeholders are filled by `translate()`. Bundled in the client (small).
@@ -71,6 +71,13 @@ To add a locale:
 2. Copy `src/locales/fr/page.json` and `src/locales/fr/runtime.json` to `src/locales/<code>/` and translate every value (same keys, same `<em>`/`<b>` emphasis, no French `&nbsp;` before `?`/`:`/`!` where the target language has no such rule).
 3. Register the runtime file in `dictionaries` in `src/lib/i18n.ts` (the type-check fails until every `LocaleCode` has one).
 4. `pnpm build` emits `dist/<code>/index.html`; the switcher links to the first other locale, so with three or more locales replace it with a list built from `meta.alternates`.
+
+## SEO
+
+- Each page declares one `<link rel="canonical">` equal to its own URL, `hreflang` links for `fr`, `en` and `x-default` (the site root), `og:url` / `og:locale` / `og:locale:alternate`, Twitter card tags and the `robots` meta; all rendered from `meta.*` by the Vite plugin.
+- The JSON-LD block (`Person` + `WebSite` + `ProfilePage`) lives in the template head; `jobTitle`, `description` and `inLanguage` are localized. Dictionary values used there must stay valid inside a JSON string (no unescaped `"`), which `vite/i18n-html.test.ts` checks by parsing the rendered block for every locale.
+- `public/robots.txt` (blocks `/api/`, points to the sitemap), `public/sitemap.xml` (both locale URLs with `xhtml:link` alternates) and `public/manifest.webmanifest` are static. Update the sitemap by hand when a locale is added.
+- The email address in the mobile menu is wrapped in `<!--email_off-->` … `<!--/email_off-->` so Cloudflare's Email Address Obfuscation leaves it alone and stops injecting `email-decode.min.js`. Keep the wrapper on any new occurrence in the body; `<head>` and `<script>` contents are never rewritten. The `mailto:` fallback of the contact form is built in JavaScript and needs no guard.
 
 ## Content sources
 

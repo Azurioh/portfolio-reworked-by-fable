@@ -2,7 +2,9 @@
   "head": {
     "title": "Alan Cunin — Étudiant Epitech, cloud, hackathons &amp; esport",
     "description": "Alan Cunin, étudiant Epitech à Mulhouse, capitaine du AWS Cloud Club, dirigeant d'une association esport à Besançon. 1er mondial au Clash of Agents AWS 2026.",
-    "ogDescription": "J'apprends en construisant. De 2 min 20 à 10 secondes : le record du Clash of Agents AWS."
+    "ogDescription": "J'apprends en construisant. De 2 min 20 à 10 secondes : le record du Clash of Agents AWS.",
+    "ogImageAlt": "Portrait d'Alan Cunin, étudiant Epitech — cloud, hackathons et esport",
+    "jobTitle": "Étudiant en développement logiciel à Epitech"
   },
   "links": {
     "github": "GitHub",
@@ -27,7 +29,7 @@
   },
   "menu": {
     "linksLabel": "Menu mobile",
-    "foot": "alancunin@gmail.com · Mulhouse / Besançon"
+    "foot": "Mulhouse / Besançon"
   },
   "hero": {
     "firstName": "Alan",
