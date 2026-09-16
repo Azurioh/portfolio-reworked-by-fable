@@ -13,6 +13,7 @@ pnpm build             # type-check + build the site in dist/ and the server in 
 pnpm test              # vitest (i18n rendering, dictionary parity, runtime strings)
 pnpm start             # serve dist/ and /api/contact from dist-server/ (needs the env vars)
 pnpm preview           # Vite preview of dist/ only (no API)
+pnpm fonts             # regenerate public/fonts/ and src/fonts.css (committed); needs macOS for the Menlo fallback metrics
 ```
 
 ## Environment

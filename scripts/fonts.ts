@@ -25,7 +25,7 @@
  *   - Menlo is not in that collection, so it is unpacked from the macOS system
  *     font.
  */
-import { mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import arial from '@capsizecss/metrics/arial';
@@ -44,6 +44,12 @@ const OUT_DIR = resolve(ROOT, 'public', 'fonts');
 const CSS_OUT = resolve(ROOT, 'src', 'fonts.css');
 const PUBLIC_FONT_PATH = '/fonts';
 
+/**
+ * macOS-only dependency: Menlo is not part of the `@capsizecss/metrics`
+ * collection, so its metrics are unpacked from the system font at this path.
+ * The script therefore only runs on macOS; its outputs are committed, so
+ * other platforms never need to run it.
+ */
 const MENLO_SYSTEM_FONT = '/System/Library/Fonts/Menlo.ttc';
 const MENLO_POSTSCRIPT_NAME = 'Menlo-Regular';
 
@@ -173,6 +179,11 @@ async function resolveFallback(fallback: FallbackSource): Promise<CapsizeMetrics
   if (fallback.kind === 'collection') {
     return fallback.metrics;
   }
+  if (!existsSync(fallback.file)) {
+    throw new FontBuildError({
+      message: `system font ${fallback.file} not found; the fallback metrics for ${fallback.postscriptName} are read from the macOS system fonts, so \`pnpm fonts\` must run on macOS`,
+    });
+  }
   return unpackFile(fallback.file, { postscriptName: fallback.postscriptName });
 }
 
@@ -226,6 +237,9 @@ const FAMILIES: FontFamily[] = [
     name: 'Fraunces',
     pkg: 'fraunces',
     requiredAxes: ['wght', 'opsz', 'SOFT'],
+    // The upright headings (.hero__title, .h2, .work__title, .quote p, .contact__title) render at
+    // opsz 144 / wght 300 / SOFT 0; SOFT 100 is only used on the italic accent words. SOFT widens
+    // the latin xWidthAvg from 718 to 742 (+3.3%), so the upright fallback is tuned to SOFT 0.
     measureAt: { opsz: 144, wght: 300, SOFT: 0 },
     faces: [
       {
