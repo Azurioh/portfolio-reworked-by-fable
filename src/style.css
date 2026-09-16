@@ -10,7 +10,7 @@
   --ink-3: #182038;
   --paper: #eef2ff;
   --paper-70: rgba(238, 242, 255, 0.7);
-  --paper-45: rgba(238, 242, 255, 0.45);
+  --paper-50: rgba(238, 242, 255, 0.5);
   --paper-15: rgba(238, 242, 255, 0.14);
   --accent: #6ee7f9;
   --accent-2: #a78bfa;
@@ -128,6 +128,20 @@ b {
 
 .skip:focus {
   transform: none;
+}
+
+/* Visually hidden, still announced by assistive technology */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* Split text helpers */
@@ -403,7 +417,7 @@ body::before {
   align-items: center;
   min-height: 44px;
   padding: 0 1.25rem;
-  border: 1px solid var(--paper-45);
+  border: 1px solid var(--paper-50);
   border-radius: 999px;
   font-size: 0.85rem;
   transition:
@@ -535,7 +549,7 @@ body::before {
 .menu__foot {
   margin-top: 2rem;
   font: 400 0.75rem var(--font-mono);
-  color: var(--paper-45);
+  color: var(--paper-50);
 }
 
 /* ------------------------------------------------------------------
@@ -754,7 +768,7 @@ section {
   margin-left: 0.5rem;
   font: 400 0.62rem var(--font-mono);
   letter-spacing: 0.08em;
-  color: var(--paper-45);
+  color: var(--paper-50);
 }
 
 .hero__meta {
@@ -808,7 +822,7 @@ section {
   font: 500 0.65rem var(--font-mono);
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--paper-45);
+  color: var(--paper-50);
 }
 
 .hero__scroll i {
@@ -921,7 +935,7 @@ section {
   font: 500 0.62rem var(--font-mono);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--paper-45);
+  color: var(--paper-50);
 }
 
 .bench__row {
@@ -932,7 +946,7 @@ section {
   font: 500 0.62rem var(--font-mono);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--paper-45);
+  color: var(--paper-50);
 }
 
 .bench__track {
@@ -1034,7 +1048,7 @@ section {
   font: 400 0.6rem var(--font-mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--paper-45);
+  color: var(--paper-50);
 }
 
 @media (min-width: 900px) {
@@ -1368,7 +1382,7 @@ section {
 }
 
 .term__o {
-  color: var(--paper-45);
+  color: var(--paper-50);
 }
 
 .term__sha {
@@ -1377,7 +1391,7 @@ section {
 }
 
 .term__meta {
-  color: var(--paper-45);
+  color: var(--paper-50);
 }
 
 .term__cursor {
@@ -1424,7 +1438,7 @@ section {
   font: 500 0.62rem var(--font-mono);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--paper-45);
+  color: var(--paper-50);
 }
 
 .work__title {
@@ -1732,7 +1746,7 @@ section {
   font: 400 0.66rem var(--font-mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--paper-45);
+  color: var(--paper-50);
 }
 
 @media (min-width: 720px) {
@@ -1821,7 +1835,7 @@ section {
 .quote footer {
   font: 400 0.75rem var(--font-mono);
   letter-spacing: 0.08em;
-  color: var(--paper-45);
+  color: var(--paper-50);
 }
 
 .quote footer b {
@@ -1888,7 +1902,7 @@ section {
   margin-left: 0.75rem;
   font: 400 0.72rem var(--font-mono);
   letter-spacing: 0.1em;
-  color: var(--paper-45);
+  color: var(--paper-50);
   font-variant-numeric: tabular-nums;
 }
 
@@ -1962,7 +1976,7 @@ section {
   font: 500 0.66rem var(--font-mono);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--paper-45);
+  color: var(--paper-50);
 }
 
 .cform__input {
@@ -1981,11 +1995,11 @@ section {
 }
 
 .cform__input::placeholder {
-  color: var(--paper-45);
+  color: var(--paper-50);
 }
 
 .cform__input:hover {
-  border-color: var(--paper-45);
+  border-color: var(--paper-50);
 }
 
 .cform__input:focus {
@@ -2006,7 +2020,7 @@ section {
 
 .cform__hint {
   font: 400 0.72rem var(--font-mono);
-  color: var(--paper-45);
+  color: var(--paper-50);
 }
 
 .cform__error {
@@ -2127,7 +2141,7 @@ section {
   margin-top: 2rem;
   font: 400 0.72rem var(--font-mono);
   letter-spacing: 0.06em;
-  color: var(--paper-45);
+  color: var(--paper-50);
 }
 
 .contact__aside a {
@@ -2164,7 +2178,7 @@ section {
   border-top: 1px solid var(--paper-15);
   font: 400 0.68rem var(--font-mono);
   letter-spacing: 0.06em;
-  color: var(--paper-45);
+  color: var(--paper-50);
 }
 
 .foot__time {

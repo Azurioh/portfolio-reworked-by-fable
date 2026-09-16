@@ -14,7 +14,7 @@
   },
   "nav": {
     "skip": "Skip to content",
-    "logoLabel": "Back to top",
+    "logoLabel": "AC — back to top",
     "linksLabel": "Main navigation",
     "items": {
       "record": "The record",
@@ -32,6 +32,7 @@
     "foot": "Mulhouse / Besançon"
   },
   "hero": {
+    "name": "Alan Cunin",
     "firstName": "Alan",
     "lastName": "Cunin",
     "eyebrow": "<b>~/alan</b> · epitech · class of 2028 · besançon",

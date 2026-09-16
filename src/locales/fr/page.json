@@ -14,7 +14,7 @@
   },
   "nav": {
     "skip": "Aller au contenu",
-    "logoLabel": "Retour en haut",
+    "logoLabel": "AC — retour en haut",
     "linksLabel": "Navigation principale",
     "items": {
       "record": "Le record",
@@ -32,6 +32,7 @@
     "foot": "Mulhouse / Besançon"
   },
   "hero": {
+    "name": "Alan Cunin",
     "firstName": "Alan",
     "lastName": "Cunin",
     "eyebrow": "<b>~/alan</b> · epitech · promo 2028 · besançon",

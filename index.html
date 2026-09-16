@@ -107,8 +107,9 @@
         </p>
 
         <h1 class="hero__title">
-          <span class="hero__word" data-split="chars">{{ hero.firstName }}</span>
-          <span class="hero__word hero__word--it" data-split="chars">{{ hero.lastName }}</span>
+          <span class="sr-only">{{ hero.name }}</span>
+          <span class="hero__word" data-split="chars" aria-hidden="true">{{ hero.firstName }}</span>
+          <span class="hero__word hero__word--it" data-split="chars" aria-hidden="true">{{ hero.lastName }}</span>
         </h1>
 
         <p class="hero__role" data-split="lines">
@@ -150,9 +151,9 @@
         </figure>
 
         <div class="hero__meta">
-          <a class="hero__link" href="https://github.com/azurioh" target="_blank" rel="noopener" data-cursor="link">{{ links.github }}</a>
-          <a class="hero__link" href="https://www.linkedin.com/in/alancunin" target="_blank" rel="noopener" data-cursor="link">{{ links.linkedin }}</a>
-          <a class="hero__link" href="/cv.pdf" target="_blank" rel="noopener" data-cursor="link">{{ links.cv }}</a>
+          <a class="hero__link" href="https://github.com/azurioh" target="_blank" rel="noopener noreferrer" data-cursor="link">{{ links.github }}</a>
+          <a class="hero__link" href="https://www.linkedin.com/in/alancunin" target="_blank" rel="noopener noreferrer" data-cursor="link">{{ links.linkedin }}</a>
+          <a class="hero__link" href="/cv.pdf" target="_blank" rel="noopener noreferrer" data-cursor="link">{{ links.cv }}</a>
         </div>
 
         <a class="hero__scroll" href="#record" data-cursor="link" aria-label="{{ hero.scrollLabel }}">
@@ -315,7 +316,7 @@
                 {{ pieces.items.1.desc }}
               </p>
               <ul class="work__stack"><li>{{ pieces.items.1.stack.0 }}</li><li>{{ pieces.items.1.stack.1 }}</li><li>{{ pieces.items.1.stack.2 }}</li><li>{{ pieces.items.1.stack.3 }}</li></ul>
-              <a class="work__link" href="https://github.com/Azurioh/ccprofile" target="_blank" rel="noopener" data-cursor="link">{{ pieces.viewOnGithub }}</a>
+              <a class="work__link" href="https://github.com/Azurioh/ccprofile" target="_blank" rel="noopener noreferrer" data-cursor="link">{{ pieces.viewOnGithub }}</a>
             </div>
           </article>
 
@@ -343,12 +344,12 @@
                 {{ pieces.items.2.desc }}
               </p>
               <ul class="work__stack"><li>{{ pieces.items.2.stack.0 }}</li><li>{{ pieces.items.2.stack.1 }}</li><li>{{ pieces.items.2.stack.2 }}</li><li>{{ pieces.items.2.stack.3 }}</li></ul>
-              <a class="work__link" href="https://github.com/Azurioh/discord-kernel" target="_blank" rel="noopener" data-cursor="link">{{ pieces.viewOnGithub }}</a>
+              <a class="work__link" href="https://github.com/Azurioh/discord-kernel" target="_blank" rel="noopener noreferrer" data-cursor="link">{{ pieces.viewOnGithub }}</a>
             </div>
           </article>
         </div>
 
-        <a class="works__more" href="https://github.com/azurioh" target="_blank" rel="noopener" data-cursor="link">
+        <a class="works__more" href="https://github.com/azurioh" target="_blank" rel="noopener noreferrer" data-cursor="link">
           <span>{{ pieces.more }}</span><i>→</i>
         </a>
       </section>
@@ -484,24 +485,24 @@
           <div class="cform__grid">
             <div class="cform__field">
               <label class="cform__label" for="cf-name">{{ contact.form.name }}</label>
-              <input class="cform__input" id="cf-name" name="name" type="text" autocomplete="name" required maxlength="80" />
-              <p class="cform__error" data-error-for="name" aria-live="polite"></p>
+              <input class="cform__input" id="cf-name" name="name" aria-describedby="cf-name-error" type="text" autocomplete="name" required maxlength="80" />
+              <p class="cform__error" id="cf-name-error" data-error-for="name" aria-live="polite"></p>
             </div>
             <div class="cform__field">
               <label class="cform__label" for="cf-email">{{ contact.form.email }}</label>
-              <input class="cform__input" id="cf-email" name="email" type="email" autocomplete="email" inputmode="email" required maxlength="120" />
-              <p class="cform__error" data-error-for="email" aria-live="polite"></p>
+              <input class="cform__input" id="cf-email" name="email" aria-describedby="cf-email-error" type="email" autocomplete="email" inputmode="email" required maxlength="120" />
+              <p class="cform__error" id="cf-email-error" data-error-for="email" aria-live="polite"></p>
             </div>
             <div class="cform__field cform__field--full">
               <label class="cform__label" for="cf-subject">{{ contact.form.subject }}</label>
-              <input class="cform__input" id="cf-subject" name="subject" type="text" required maxlength="120" placeholder="{{ contact.form.subjectPlaceholder }}" />
-              <p class="cform__error" data-error-for="subject" aria-live="polite"></p>
+              <input class="cform__input" id="cf-subject" name="subject" aria-describedby="cf-subject-error" type="text" required maxlength="120" placeholder="{{ contact.form.subjectPlaceholder }}" />
+              <p class="cform__error" id="cf-subject-error" data-error-for="subject" aria-live="polite"></p>
             </div>
             <div class="cform__field cform__field--full">
               <label class="cform__label" for="cf-message">{{ contact.form.message }}</label>
-              <textarea class="cform__input cform__input--area" id="cf-message" name="message" rows="6" required maxlength="4000"></textarea>
+              <textarea class="cform__input cform__input--area" id="cf-message" name="message" aria-describedby="cf-message-error" rows="6" required maxlength="4000"></textarea>
               <p class="cform__hint">{{ contact.form.hint }}</p>
-              <p class="cform__error" data-error-for="message" aria-live="polite"></p>
+              <p class="cform__error" id="cf-message-error" data-error-for="message" aria-live="polite"></p>
             </div>
           </div>
           <div class="cform__trap" aria-hidden="true">
@@ -518,12 +519,12 @@
         </form>
 
         <ul class="contact__links">
-          <li><a href="https://www.linkedin.com/in/alancunin" target="_blank" rel="noopener" data-cursor="link">{{ links.linkedin }}</a></li>
-          <li><a href="https://github.com/azurioh" target="_blank" rel="noopener" data-cursor="link">{{ links.github }}</a></li>
-          <li><a href="/cv.pdf" target="_blank" rel="noopener" data-cursor="link">{{ links.cv }}</a></li>
-          <li><a href="https://www.malt.fr/profile/alancunin" target="_blank" rel="noopener" data-cursor="link">{{ links.malt }}</a></li>
+          <li><a href="https://www.linkedin.com/in/alancunin" target="_blank" rel="noopener noreferrer" data-cursor="link">{{ links.linkedin }}</a></li>
+          <li><a href="https://github.com/azurioh" target="_blank" rel="noopener noreferrer" data-cursor="link">{{ links.github }}</a></li>
+          <li><a href="/cv.pdf" target="_blank" rel="noopener noreferrer" data-cursor="link">{{ links.cv }}</a></li>
+          <li><a href="https://www.malt.fr/profile/alancunin" target="_blank" rel="noopener noreferrer" data-cursor="link">{{ links.malt }}</a></li>
         </ul>
-        <p class="contact__aside">{{ contact.asideBefore }}<a href="https://azu-dev.fr" target="_blank" rel="noopener" data-cursor="link">azu-dev.fr</a>{{ contact.asideAfter }}</p>
+        <p class="contact__aside">{{ contact.asideBefore }}<a href="https://azu-dev.fr" target="_blank" rel="noopener noreferrer" data-cursor="link">azu-dev.fr</a>{{ contact.asideAfter }}</p>
       </section>
     </main>
 

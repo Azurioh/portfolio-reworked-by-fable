@@ -41,6 +41,7 @@ export function splitAll(): void {
     const split = new SplitText(el, {
       type: 'lines',
       linesClass: 'split-line',
+      aria: 'none',
       autoSplit: true,
       onSplit: (self) =>
         gsap.from(self.lines, {
@@ -60,7 +61,7 @@ export function splitAll(): void {
  */
 export function heroReveal(): void {
   const words = document.querySelectorAll<HTMLElement>('.hero__word');
-  const splits = Array.from(words).map((w) => new SplitText(w, { type: 'chars', charsClass: 'char' }));
+  const splits = Array.from(words).map((w) => new SplitText(w, { type: 'chars', charsClass: 'char', aria: 'hidden' }));
   const chars = splits.flatMap((s) => s.chars);
 
   gsap
