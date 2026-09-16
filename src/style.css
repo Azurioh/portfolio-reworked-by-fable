@@ -1,3 +1,5 @@
+@import './fonts.css';
+
 /* ------------------------------------------------------------------
    Alan Cunin — portfolio
    Tokens
@@ -15,9 +17,9 @@
   --accent-25: rgba(110, 231, 249, 0.25);
   --amber: #fbbf24;
 
-  --font-display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
-  --font-body: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-display: 'Fraunces', 'Fraunces Fallback', 'Iowan Old Style', Georgia, serif;
+  --font-body: 'Instrument Sans', 'Instrument Sans Fallback', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', 'JetBrains Mono Fallback', ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --gutter: clamp(1.25rem, 5vw, 5rem);
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
