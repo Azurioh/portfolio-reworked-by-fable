@@ -1,6 +1,6 @@
 # Alan Cunin — portfolio
 
-Immersive single-page portfolio. Vanilla TypeScript, Vite, GSAP (ScrollTrigger, SplitText) and Lenis, plus a small Hono server that serves the built site and forwards contact-form messages to a Discord webhook.
+Immersive single-page portfolio. Vanilla TypeScript, Vite, GSAP (ScrollTrigger, SplitText) and Lenis, plus a small Hono server that serves the built site and forwards contact-form messages to a Discord webhook. Served in French at `alancunin.fr/` and in English at `alancunin.fr/en/`.
 
 ## Scripts
 
@@ -13,6 +13,7 @@ pnpm build             # type-check + build the site in dist/ and the server in 
 pnpm test              # vitest (i18n rendering, dictionary parity, runtime strings, HTTP redirects/caching/headers)
 pnpm start             # serve dist/ and /api/contact from dist-server/ (needs the env vars)
 pnpm preview           # Vite preview of dist/ only (no API)
+pnpm images            # regenerate public/img/portrait-*.webp, public/img/og.jpg and the icons (favicon.ico, apple-touch-icon.png, icon-192.png, icon-512.png) from public/img/portrait.webp and public/favicon.svg; committed, cross-platform (sharp)
 pnpm fonts             # regenerate public/fonts/ and src/fonts.css (committed); needs macOS for the Menlo fallback metrics
 ```
 
@@ -25,23 +26,11 @@ pnpm fonts             # regenerate public/fonts/ and src/fonts.css (committed);
 | `STATIC_DIR` | server | no (`dist`) | Directory of the built site served next to the API. |
 | `VITE_CONTACT_ENDPOINT` | client | no | Absolute URL of another endpoint accepting the same JSON POST; defaults to same-origin `/api/contact`. |
 
-The server fails fast at boot when `DISCORD_WEBHOOK_URL` is missing or invalid. The Content-Security-Policy only allows `connect-src 'self' https://api.github.com`: when `VITE_CONTACT_ENDPOINT` points to another origin, add that origin to `connectSrc` in `server/shared/http/security-headers.ts` or the browser blocks the request.
+The server fails fast at boot when `DISCORD_WEBHOOK_URL` is missing or invalid. See "SEO & headers" below for the CSP note about `VITE_CONTACT_ENDPOINT`.
 
 ## Contact API
 
 `POST /api/contact` with `Content-Type: application/json` and `{ name, email, subject, message, website }` (`website` is the honeypot, left empty by humans). Answers `{ ok: true }` or `{ ok: false, code, message }` with `400` (validation), `415` (not JSON), `429` (more than 5 messages per hour per IP, read from `x-forwarded-for` / `x-real-ip`) or `502` (Discord unreachable). The browser falls back to a prefilled `mailto:` when delivery fails.
-
-## HTTP caching and headers
-
-`server/shared/http/` holds the origin-level HTTP policy: `redirects.ts` answers `301` for `/index.html` → `/`, `/en` → `/en/` and `/en/index.html` → `/en/`; `security-headers.ts` sets HSTS (one year, subdomains), the CSP, `Permissions-Policy` and `Referrer-Policy: strict-origin-when-cross-origin` on every response; `cache-control.ts` sets `Cache-Control` on successful responses (redirects and 404s carry none). Cloudflare honours these origin headers and compresses at the edge, so the server ships no compression or precompressed files.
-
-| Path | `Cache-Control` |
-|---|---|
-| `/assets/*` (hashed by Vite) | `public, max-age=31536000, immutable` |
-| `/fonts/*`, `/img/*`, `/*.png`, `/favicon.ico`, `/favicon.svg` | `public, max-age=2592000, stale-while-revalidate=86400` |
-| `/sitemap.xml`, `/robots.txt`, `/manifest.webmanifest`, `/cv.pdf` | `public, max-age=3600` |
-| HTML (`/`, `/en/`, `*.html`) | `no-cache` |
-| `/api/*` (any status) | `no-store` |
 
 ## Deploy on Dokploy
 
@@ -53,13 +42,17 @@ The Hono handler (`server/app.ts` and `server/contact/`) only uses Web-standard 
 
 ## Structure
 
-- `index.html` — locale-agnostic template of the whole page (sections are "planches" I → VI). Every visible string, `alt`, `aria-label`, `placeholder` and head tag is a `{{ section.key }}` placeholder; `{{ meta.lang }}`, `{{ meta.url }}`, `{{ meta.ogLocale }}`, `{{ meta.alternateLinks }}`, `{{ meta.image }}` and the language switcher (`{{ meta.alternate.path }}`, `.htmlLang`, `.ogLocale`, `.label`) come from the locale config.
+- `index.html` — locale-agnostic template of the whole page (sections are "planches" I → VI). Every visible string, `alt`, `aria-label`, `placeholder` and head tag is a `{{ section.key }}` placeholder; `{{ meta.lang }}`, `{{ meta.url }}`, `{{ meta.ogLocale }}`, `{{ meta.alternateLinks }}`, `{{ meta.image }}`, `{{ meta.jsonLd }}` and the language switcher (`{{ meta.alternate.path }}`, `.htmlLang`, `.ogLocale`, `.label`) come from the locale config.
 - `src/locales/index.ts` — locale list (`code`, public `path`, `htmlLang`, `ogLocale`), `LocaleCode`, `defaultLocale` and `SITE_URL`.
 - `src/locales/<code>/page.json` — one dictionary per locale, nested by section (`nav`, `hero`, `record`, …), values are trusted HTML (`<em>`, `&nbsp;` allowed). Rendered at build time only, never bundled in the client.
 - `src/locales/<code>/runtime.json` — flat dictionary of the strings set from TypeScript (menu and pause `aria-label`s, form validation and status messages, terminal fallbacks, local-time label). `{name}` placeholders are filled by `translate()`. Bundled in the client (small).
 - `src/lib/i18n.ts` — `getLocale()` reads `<html lang>` (unknown values fall back to `fr`), `t(key)` / `translate({ key, vars })` read the runtime dictionary. Keys are typed from the French file.
 - `src/lib/contact-issues.ts` — maps a locale-neutral issue of the shared Zod schema (`path` + `code` + bounds) to a runtime key.
 - `vite/i18n-html.ts` — Vite plugin that renders the template once per locale that has a dictionary: `/` → `dist/index.html`, `/<code>/` → `dist/<code>/index.html`, same hashed assets. In dev, `/` and `/<code>/` are rendered on the fly. A missing key, a leftover `{{` or a locale with no alternate to link to fails the build. Unit tests in `vite/i18n-html.test.ts`, dictionary parity in `src/locales/locales.test.ts` (`pnpm test`).
+- `vite/json-ld.ts` — builds the JSON-LD `@graph` (`Person` + `WebSite` + `ProfilePage`) injected into `{{ meta.jsonLd }}`; escapes `<` so no dictionary value can close the `<script>` tag.
+- `scripts/images.ts` (`pnpm images`) — sharp: responsive portrait `srcset` variants (`320`/`480`/`640`/`960`/`1000`w), `public/img/og.jpg`, and the icons (`favicon.ico`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`) from `public/img/portrait.webp` and `public/favicon.svg`. Cross-platform, idempotent, committed.
+- `scripts/fonts.ts` (`pnpm fonts`) — copies the self-hosted Fraunces / Instrument Sans / JetBrains Mono `woff2` files into `public/fonts/` and generates `src/fonts.css` with metric-adjusted fallback faces (`size-adjust`, `ascent-override`, `descent-override`). Reads the macOS system Menlo font for the fallback metrics, so it only regenerates on macOS; the outputs are committed and other platforms never need to run it.
+- `src/fonts.css` — generated `@font-face` and fallback-face rules, imported first by `src/style.css`.
 - `src/style.css` — design tokens, layout, responsive rules, reduced-motion fallbacks.
 - `src/main.ts` — boot sequence (intro, smooth scroll, scenes).
 - `src/lib/smooth.ts` — Lenis + GSAP ticker sync.
@@ -69,10 +62,10 @@ The Hono handler (`server/app.ts` and `server/contact/`) only uses Web-standard 
 - `src/lib/ui.ts` — mobile menu, anchors, testimonials rotation, local time.
 - `src/lib/contact.ts` — contact form: inline validation, honeypot, POST to `/api/contact`, mailto fallback.
 - `src/shared/contact/` — Zod schema shared by the browser and the server (`#shared/*` import alias).
-- `server/` — Hono server (`#server/*` alias): `env.ts` (the only reader of `process.env`), `app.ts` (composition), `shared/http/` (redirects, security headers, `Cache-Control`), `contact/` split into `domain/`, `application/`, `infrastructure/`, `presentation/`. HTTP behaviour is tested in `server/app.test.ts`.
-- `public/img/` — optimised WebP assets; `public/cv.pdf`.
+- `server/` — Hono server (`#server/*` alias): `env.ts` (the only reader of `process.env`), `app.ts` (composition), `shared/http/` (`redirects.ts`, `security-headers.ts`, `cache-control.ts`), `contact/` split into `domain/`, `application/`, `infrastructure/`, `presentation/`. HTTP behaviour is tested in `server/app.test.ts`.
+- `public/img/` — optimised WebP portrait variants and the generated `og.jpg`; `public/fonts/` — self-hosted `woff2` files (generated, committed); `public/cv.pdf`; the generated icons (`favicon.ico`, `favicon.svg`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`) and the static `robots.txt` / `sitemap.xml` / `manifest.webmanifest` (see "SEO & headers").
 
-## Locales
+## i18n
 
 `/` is French, `/en/` is English; both share the section ids, the assets and `/cv.pdf`. The switcher link (`.nav__lang`, in the header and in the mobile menu) points to the other locale and carries `hreflang`/`lang` plus an `aria-label` in the target language (`nav.langLabel`).
 
@@ -83,15 +76,36 @@ To add a locale:
 1. Append `{ code, path: '/<code>/', htmlLang, ogLocale }` to `locales` in `src/locales/index.ts` and extend the `LocaleCode` union.
 2. Copy `src/locales/fr/page.json` and `src/locales/fr/runtime.json` to `src/locales/<code>/` and translate every value (same keys, same `<em>`/`<b>` emphasis, no French `&nbsp;` before `?`/`:`/`!` where the target language has no such rule).
 3. Register the runtime file in `dictionaries` in `src/lib/i18n.ts` (the type-check fails until every `LocaleCode` has one).
-4. `pnpm build` emits `dist/<code>/index.html`; the switcher links to the first other locale, so with three or more locales replace it with a list built from `meta.alternates`.
+4. `pnpm build` emits `dist/<code>/index.html`; the switcher links to the first other locale, so with three or more locales replace it with a list built from `meta.alternates`. `pnpm test` (`src/locales/locales.test.ts`) enforces key parity across every dictionary it finds via `import.meta.glob`.
 
-## SEO
+## SEO & headers
 
 - Each page declares one `<link rel="canonical">` equal to its own URL, `hreflang` links for `fr`, `en` and `x-default` (the site root), `og:url` / `og:locale` / `og:locale:alternate`, Twitter card tags and the `robots` meta; all rendered from `meta.*` by the Vite plugin.
 - The JSON-LD graph (`Person` + `WebSite` + `ProfilePage`) is built by `vite/json-ld.ts` with `JSON.stringify` (`<` escaped so no value can close the script) and rendered through `{{ meta.jsonLd }}`; `jobTitle` and `description` come from `head.*` in the dictionary, `inLanguage` and the page URL from the locale.
 - `public/robots.txt` (blocks `/api/`, points to the sitemap), `public/sitemap.xml` (both locale URLs with `xhtml:link` alternates) and `public/manifest.webmanifest` are static. Update the sitemap by hand when a locale is added.
 - The email address in the mobile menu is wrapped in `<!--email_off-->` … `<!--/email_off-->` so Cloudflare's Email Address Obfuscation leaves it alone and stops injecting `email-decode.min.js`. Keep the wrapper on any new occurrence in the body; `<head>` and `<script>` contents are never rewritten. The `mailto:` fallback of the contact form is built in JavaScript and needs no guard.
 
+`server/shared/http/` holds the origin-level HTTP policy: `redirects.ts` answers `301` for `/index.html` → `/`, `/en` → `/en/` and `/en/index.html` → `/en/`; `security-headers.ts` sets HSTS (one year, subdomains), the CSP, `Permissions-Policy` and `Referrer-Policy: strict-origin-when-cross-origin` on every response; `cache-control.ts` sets `Cache-Control` on successful responses (redirects and 404s carry none). Cloudflare honours these origin headers and compresses at the edge, so the server ships no compression or precompressed files.
+
+| Path | `Cache-Control` |
+|---|---|
+| `/assets/*` (hashed by Vite) | `public, max-age=31536000, immutable` |
+| `/fonts/*`, `/img/*`, `/*.png`, `/favicon.ico`, `/favicon.svg` | `public, max-age=2592000, stale-while-revalidate=86400` |
+| `/sitemap.xml`, `/robots.txt`, `/manifest.webmanifest`, `/cv.pdf` | `public, max-age=3600` |
+| HTML (`/`, `/en/`, `*.html`) | `no-cache` |
+| `/api/*` (any status) | `no-store` |
+
+The Content-Security-Policy only allows `connect-src 'self' https://api.github.com`: when `VITE_CONTACT_ENDPOINT` points to another origin, add that origin to `connectSrc` in `server/shared/http/security-headers.ts` or the browser blocks the request.
+
+## Cloudflare checklist
+
+Manual dashboard actions this repository cannot automate:
+
+1. Add a DNS record for `www` and a Redirect Rule `www.alancunin.fr/*` → `https://alancunin.fr/$1` (301).
+2. Turn off **Scrape Shield → Email Address Obfuscation** (belt and braces with the `<!--email_off-->` guard already in the markup).
+3. Optionally enable HSTS at the edge once the origin's `strict-transport-security` header is confirmed in production.
+4. Purge the Cloudflare cache after deploying this branch, so the old 4-hour-TTL assets and the previous `index.html` are dropped in favour of the new `Cache-Control` policy and the localized templates.
+
 ## Content sources
 
-Personal portfolio: facts come from alancunin.fr, the CV, the GitHub profile (azurioh) and the Epitech article about the AWS Clash of Agents 2026. The freelance activity (azu-dev.fr) is only linked from the contact section.
+Personal portfolio: facts come from alancunin.fr, the CV, the GitHub profile (azurioh) and the Epitech article about the AWS Clash of Agents 2026. The freelance activity (azu-dev.fr) is only linked from the contact section. `alancunin.fr/en/` is the English page; `alancunin.fr/` is the French one.

@@ -6,5 +6,6 @@ dist-server
 !.env.example
 .git
 .claude
+.superpowers
 *.log
 .DS_Store
