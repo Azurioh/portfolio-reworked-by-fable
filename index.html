@@ -47,46 +47,7 @@
       .intro { position: fixed; inset: 0; z-index: 120; background: #0a0e1a; }
     </style>
     <link rel="stylesheet" href="/src/style.css" />
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@graph": [
-          {
-            "@type": "Person",
-            "@id": "https://alancunin.fr/#person",
-            "name": "Alan Cunin",
-            "url": "https://alancunin.fr/",
-            "image": "https://alancunin.fr/img/portrait.webp",
-            "jobTitle": "{{ head.jobTitle }}",
-            "description": "{{ head.description }}",
-            "email": "mailto:alancunin@gmail.com",
-            "alumniOf": { "@type": "EducationalOrganization", "name": "Epitech" },
-            "affiliation": { "@type": "EducationalOrganization", "name": "Epitech" },
-            "address": { "@type": "PostalAddress", "addressLocality": "Besançon", "addressCountry": "FR" },
-            "sameAs": [
-              "https://github.com/azurioh",
-              "https://www.linkedin.com/in/alancunin",
-              "https://www.malt.fr/profile/alancunin",
-              "https://azu-dev.fr"
-            ]
-          },
-          {
-            "@type": "WebSite",
-            "@id": "https://alancunin.fr/#website",
-            "url": "https://alancunin.fr/",
-            "name": "Alan Cunin",
-            "inLanguage": "{{ meta.lang }}",
-            "publisher": { "@id": "https://alancunin.fr/#person" }
-          },
-          {
-            "@type": "ProfilePage",
-            "url": "{{ meta.url }}",
-            "inLanguage": "{{ meta.lang }}",
-            "mainEntity": { "@id": "https://alancunin.fr/#person" }
-          }
-        ]
-      }
-    </script>
+    <script type="application/ld+json">{{ meta.jsonLd }}</script>
   </head>
   <body>
     <a class="skip" href="#atelier">{{ nav.skip }}</a>

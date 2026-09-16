@@ -2,24 +2,32 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { locales, SITE_URL, type Locale } from '../src/locales/index.ts';
-import { buildMeta, renderTemplate } from './i18n-html.ts';
+import { buildMeta, buildPageValues, renderTemplate } from './i18n-html.ts';
+import { buildJsonLd } from './json-ld.ts';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const EMAIL = 'alancunin@gmail.com';
 const GUARDED_EMAIL = `<!--email_off-->${EMAIL}<!--/email_off-->`;
-const JSON_LD_RE = /<script type="application\/ld\+json">([\s\S]*?)<\/script>/;
+const JSON_LD_RE = /<script type="application\/ld\+json">([\s\S]*?)<\/script>/g;
+const HOSTILE_VALUE = 'Say "hi" \\ then </script><script>alert(1)</script>';
 const CANONICAL_RE = /<link rel="canonical" href="([^"]*)"/g;
 const HREFLANG_RE = /<link rel="alternate" hreflang="([^"]*)" href="([^"]*)"/g;
 
 const readDictionary = (locale: Locale): Record<string, unknown> =>
   JSON.parse(readFileSync(resolve(ROOT, 'src/locales', locale.code, 'page.json'), 'utf8')) as Record<string, unknown>;
 
-/** Renders the real `index.html` with the real dictionary, as the plugin does at build time. */
-const renderPage = (locale: Locale): string =>
-  renderTemplate(readFileSync(resolve(ROOT, 'index.html'), 'utf8'), {
-    ...readDictionary(locale),
-    meta: buildMeta({ locale, available: locales }),
-  });
+/** Renders the real `index.html` with the given dictionary, as the plugin does at build time. */
+const renderPageWith = (params: { locale: Locale; dictionary: Record<string, unknown> }): string =>
+  renderTemplate(
+    readFileSync(resolve(ROOT, 'index.html'), 'utf8'),
+    buildPageValues({ locale: params.locale, available: locales, dictionary: params.dictionary }),
+  );
+
+const renderPage = (locale: Locale): string => renderPageWith({ locale, dictionary: readDictionary(locale) });
+
+/** Extracts and parses every JSON-LD block of a document. */
+const jsonLdBlocksOf = (html: string): readonly unknown[] =>
+  [...html.matchAll(JSON_LD_RE)].map(([, text]) => JSON.parse(text) as unknown);
 
 const headOf = (html: string): string => html.slice(0, html.indexOf('</head>'));
 
@@ -149,15 +157,28 @@ describe('index.html head', () => {
   });
 
   it.each(locales)('renders valid JSON-LD with the $code strings', (locale) => {
-    const match = JSON_LD_RE.exec(headOf(renderPage(locale)));
-    if (match === null) {
-      throw new Error('missing JSON-LD block');
-    }
-    const graph = (JSON.parse(match[1]) as { '@graph': readonly Record<string, unknown>[] })['@graph'];
+    const blocks = jsonLdBlocksOf(headOf(renderPage(locale)));
 
-    expect(graph.map((node) => node['@type'])).toEqual(['Person', 'WebSite', 'ProfilePage']);
-    expect(graph[1]).toMatchObject({ inLanguage: locale.htmlLang });
-    expect(graph[2]).toMatchObject({ url: `${SITE_URL}${locale.path}`, inLanguage: locale.htmlLang });
+    expect(blocks).toHaveLength(1);
+    expect(blocks[0]).toMatchObject({
+      '@graph': [
+        { '@type': 'Person', '@id': `${SITE_URL}/#person`, sameAs: expect.arrayContaining(['https://github.com/azurioh']) },
+        { '@type': 'WebSite', '@id': `${SITE_URL}/#website`, inLanguage: locale.htmlLang },
+        { '@type': 'ProfilePage', url: `${SITE_URL}${locale.path}`, inLanguage: locale.htmlLang },
+      ],
+    });
+  });
+
+  it('keeps the JSON-LD block intact when a dictionary value contains quotes, backslashes and </script>', () => {
+    const [fr] = locales;
+    const real = readDictionary(fr);
+    const dictionary = { ...real, head: { ...(real.head as Record<string, unknown>), jobTitle: HOSTILE_VALUE } };
+    const head = headOf(renderPageWith({ locale: fr, dictionary }));
+    const blocks = jsonLdBlocksOf(head);
+
+    expect(head.match(/<\/script>/g)).toHaveLength(1);
+    expect(blocks).toHaveLength(1);
+    expect(blocks[0]).toMatchObject({ '@graph': [{ jobTitle: HOSTILE_VALUE }, {}, {}] });
   });
 
   it.each(locales)('only exposes the email address inside email_off comments on the $code page', (locale) => {
@@ -165,5 +186,27 @@ describe('index.html head', () => {
     const [, body] = html.split('</head>');
 
     expect(body.split(GUARDED_EMAIL).join('')).not.toContain(EMAIL);
+  });
+});
+
+describe('buildJsonLd', () => {
+  const [fr] = locales;
+  const dictionary = { head: { jobTitle: 'Dev', description: 'Desc' } };
+
+  it('never emits a raw "<", so the text cannot close its script tag', () => {
+    const text = buildJsonLd({ locale: fr, dictionary: { head: { jobTitle: HOSTILE_VALUE, description: 'x' } } });
+
+    expect(text).not.toContain('<');
+    expect(JSON.parse(text)).toMatchObject({ '@graph': [{ jobTitle: HOSTILE_VALUE }, {}, {}] });
+  });
+
+  it('throws when the dictionary lacks a localized field', () => {
+    expect(() => buildJsonLd({ locale: fr, dictionary: { head: { jobTitle: 'Dev' } } })).toThrow(/description/);
+  });
+
+  it('describes the page in its own language and URL', () => {
+    expect(JSON.parse(buildJsonLd({ locale: fr, dictionary }))).toMatchObject({
+      '@graph': [{ jobTitle: 'Dev', description: 'Desc' }, { inLanguage: 'fr' }, { url: `${SITE_URL}/`, inLanguage: 'fr' }],
+    });
   });
 });

@@ -75,7 +75,7 @@ To add a locale:
 ## SEO
 
 - Each page declares one `<link rel="canonical">` equal to its own URL, `hreflang` links for `fr`, `en` and `x-default` (the site root), `og:url` / `og:locale` / `og:locale:alternate`, Twitter card tags and the `robots` meta; all rendered from `meta.*` by the Vite plugin.
-- The JSON-LD block (`Person` + `WebSite` + `ProfilePage`) lives in the template head; `jobTitle`, `description` and `inLanguage` are localized. Dictionary values used there must stay valid inside a JSON string (no unescaped `"`), which `vite/i18n-html.test.ts` checks by parsing the rendered block for every locale.
+- The JSON-LD graph (`Person` + `WebSite` + `ProfilePage`) is built by `vite/json-ld.ts` with `JSON.stringify` (`<` escaped so no value can close the script) and rendered through `{{ meta.jsonLd }}`; `jobTitle` and `description` come from `head.*` in the dictionary, `inLanguage` and the page URL from the locale.
 - `public/robots.txt` (blocks `/api/`, points to the sitemap), `public/sitemap.xml` (both locale URLs with `xhtml:link` alternates) and `public/manifest.webmanifest` are static. Update the sitemap by hand when a locale is added.
 - The email address in the mobile menu is wrapped in `<!--email_off-->` … `<!--/email_off-->` so Cloudflare's Email Address Obfuscation leaves it alone and stops injecting `email-decode.min.js`. Keep the wrapper on any new occurrence in the body; `<head>` and `<script>` contents are never rewritten. The `mailto:` fallback of the contact form is built in JavaScript and needs no guard.
 

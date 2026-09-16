@@ -4,6 +4,7 @@ import type { Plugin } from 'vite';
 import { z } from 'zod';
 import { defaultLocale, locales, SITE_URL, type Locale } from '../src/locales/index.ts';
 import { I18nTemplateError } from './errors/i18n-template.error.ts';
+import { buildJsonLd } from './json-ld.ts';
 import { MissingAlternateLocaleError } from './errors/missing-alternate-locale.error.ts';
 import { MissingDictionaryError } from './errors/missing-dictionary.error.ts';
 
@@ -51,6 +52,13 @@ interface PageMeta {
   readonly alternateLinks: string;
   /** Absolute URL of the social preview image. */
   readonly image: string;
+}
+
+interface PageValues extends Record<string, unknown> {
+  readonly meta: PageMeta & {
+    /** Serialized structured data, see `buildJsonLd`. */
+    readonly jsonLd: string;
+  };
 }
 
 const absoluteUrl = (path: string): string => `${SITE_URL}${path}`;
@@ -102,6 +110,26 @@ export const buildMeta = (params: { locale: Locale; available: readonly Locale[]
     image: absoluteUrl(OG_IMAGE_PATH),
   };
 };
+
+/**
+ * Assembles everything the template can reference: the dictionary at the top
+ * level and `meta` (locale-derived values plus the page's JSON-LD).
+ * @param params.locale - Locale of the page being rendered.
+ * @param params.available - Locales that have a dictionary.
+ * @param params.dictionary - Parsed `page.json` of the locale.
+ * @returns The values passed to `renderTemplate`.
+ */
+export const buildPageValues = (params: {
+  locale: Locale;
+  available: readonly Locale[];
+  dictionary: Record<string, unknown>;
+}): PageValues => ({
+  ...params.dictionary,
+  meta: {
+    ...buildMeta({ locale: params.locale, available: params.available }),
+    jsonLd: buildJsonLd({ locale: params.locale, dictionary: params.dictionary }),
+  },
+});
 
 const resolveKey = (params: { values: Record<string, unknown>; path: string }): unknown => {
   let current: unknown = params.values;
@@ -169,8 +197,10 @@ const renderPage = (params: {
 }): string => {
   const file = dictionaryPath({ root: params.root, code: params.locale.code });
   const dictionary = DICTIONARY_SCHEMA.parse(JSON.parse(readFileSync(file, 'utf8')));
-  const meta = buildMeta({ locale: params.locale, available: params.available });
-  return renderTemplate(params.template, { ...dictionary, meta });
+  return renderTemplate(
+    params.template,
+    buildPageValues({ locale: params.locale, available: params.available, dictionary }),
+  );
 };
 
 /**
