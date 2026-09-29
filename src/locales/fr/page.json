@@ -75,7 +75,7 @@
     "items": [
       {
         "title": "Le cloud, en communauté",
-        "desc": "Capitaine du AWS Cloud Club de Mulhouse depuis 2025. J'anime des workshops sur l'écosystème AWS et je monte des talks avec des Developer Advocates. Distinction Captain Silver en 2026.",
+        "desc": "Capitaine du AWS Cloud Club de Mulhouse de novembre 2025 à septembre 2026. J'y ai animé des workshops sur l'écosystème AWS et monté des talks avec des Developer Advocates. Distinction Captain Silver en 2026.",
         "tags": ["AWS", "Bedrock", "Docker", "Terraform", "Workshops"]
       },
       {
@@ -90,7 +90,7 @@
       },
       {
         "title": "Transmettre",
-        "desc": "Assistant pédagogique à Epitech depuis 2025&nbsp;: mentorat sur les projets, conception de modules. Avant ça, trésorier du BDE et fondateur du club gaming. Expliquer, c'est la meilleure façon de vérifier qu'on a compris.",
+        "desc": "Assistant pédagogique à Epitech de 2025 à mars 2026&nbsp;: mentorat sur les projets, conception de modules. Avant ça, trésorier du BDE et fondateur du club gaming. Expliquer, c'est la meilleure façon de vérifier qu'on a compris.",
         "tags": ["Mentorat", "C/C++", "BDE", "Club gaming"]
       }
     ],
@@ -144,21 +144,28 @@
     "title": "La technique s'apprend. <em>La persévérance</em> se cultive.",
     "items": [
       {
+        "when": "2026",
+        "what": "Prix CARE Alsace",
+        "where": "Hacking Health Camp, Strasbourg",
+        "desc": "Un week-end avec des soignants et des designers pour rendre un compte-rendu opératoire compréhensible par le patient&nbsp;: visualisation 3D de l'intervention et chatbot RAG. Projet VisiSurg.",
+        "tags": ["Santé", "RAG"]
+      },
+      {
         "when": "Mars 2026",
         "what": "1<sup>er</sup> prix mondial",
         "where": "Clash of Agents AWS, Strasbourg",
-        "desc": "Onze heures, une nuit, un record. Puis le prix CARE Alsace au Hacking Health Camp avec VisiSurg, et la certification Claude Code in Action d'Anthropic la même année.",
+        "desc": "Onze heures, une nuit, un record. Premier prix remis par le CTO d'AWS France, et la certification Claude Code in Action d'Anthropic la même année.",
         "tags": ["Bedrock", "Agents IA"]
       },
       {
-        "when": "2025 → aujourd'hui",
+        "when": "Nov. 2025 → Sept. 2026",
         "what": "Capitaine",
         "where": "AWS Cloud Club Mulhouse",
         "desc": "Workshops AWS, talks avec des Developer Advocates, coordination de la communauté étudiante. Captain Silver en 2026.",
         "tags": ["AWS", "Communauté"]
       },
       {
-        "when": "Fév. 2025 → aujourd'hui",
+        "when": "Fév. 2025 → Mars 2026",
         "what": "Assistant pédagogique",
         "where": "Epitech Mulhouse",
         "desc": "Mentorat technique des étudiants, conception et animation de modules. En parallèle, quelques missions freelance à côté des études.",
