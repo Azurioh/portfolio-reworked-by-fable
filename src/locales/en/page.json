@@ -144,6 +144,20 @@
     "title": "Technique can be learned. <em>Perseverance</em> is cultivated.",
     "items": [
       {
+        "when": "March 2026",
+        "what": "1<sup>st</sup> prize worldwide",
+        "where": "AWS Clash of Agents, Strasbourg",
+        "desc": "Eleven hours, one night, one record. First prize handed over by the CTO of AWS France, and Anthropic's Claude Code in Action certification the same year.",
+        "tags": ["Bedrock", "AI agents"]
+      },
+      {
+        "when": "March 2026",
+        "what": "CARE Alsace award",
+        "where": "Hacking Health Camp, Strasbourg",
+        "desc": "A weekend with caregivers and designers to make a surgical report understandable by the patient: a 3D visualisation of the operation and a RAG chatbot. Project VisiSurg.",
+        "tags": ["Health", "RAG"]
+      },
+      {
         "when": "2026 → 2027",
         "what": "Exchange year",
         "where": "Dublin City University, Ireland",
@@ -163,20 +177,6 @@
         "where": "Quodalia, Guebwiller",
         "desc": "A web application built on strict clean architecture principles, and optimising agentic AI workflows for Claude Code.",
         "tags": ["Clean architecture", "Agentic AI", "Claude Code"]
-      },
-      {
-        "when": "March 2026",
-        "what": "CARE Alsace award",
-        "where": "Hacking Health Camp, Strasbourg",
-        "desc": "A weekend with caregivers and designers to make a surgical report understandable by the patient: a 3D visualisation of the operation and a RAG chatbot. Project VisiSurg.",
-        "tags": ["Health", "RAG"]
-      },
-      {
-        "when": "March 2026",
-        "what": "1<sup>st</sup> prize worldwide",
-        "where": "AWS Clash of Agents, Strasbourg",
-        "desc": "Eleven hours, one night, one record. First prize handed over by the CTO of AWS France, and Anthropic's Claude Code in Action certification the same year.",
-        "tags": ["Bedrock", "AI agents"]
       },
       {
         "when": "Nov. 2025 → Sept. 2026",
