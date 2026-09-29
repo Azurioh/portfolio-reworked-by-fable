@@ -80,7 +80,7 @@
       },
       {
         "title": "Hackathons",
-        "desc": "Winner of the Nuit de l'info, BaselHack 2024 and 2025 with Team NFT, Epitech Game Jams, CARE Alsace award at the Hacking Health Camp with VisiSurg. One sleepless night, one team, one real problem: my favourite format.",
+        "desc": "Winner of the Nuit de l'info, BaselHack 2024 and 2025 with Team NFT, Epitech Game Jams. One sleepless night, one team, one real problem: my favourite format.",
         "tags": ["Nuit de l'info", "BaselHack", "Game Jam", "Hacking Health"]
       },
       {
@@ -144,7 +144,28 @@
     "title": "Technique can be learned. <em>Perseverance</em> is cultivated.",
     "items": [
       {
+        "when": "2026 → 2027",
+        "what": "Exchange year",
+        "where": "Dublin City University, Ireland",
+        "desc": "A year of computer science in Dublin as part of the Epitech programme, in English every day. And a foot in the DJ Society.",
+        "tags": ["Computer science", "English", "DJing"]
+      },
+      {
+        "when": "2026 → today",
+        "what": "Fractional CTO",
+        "where": "Création Parquets &amp; Carrelages, Serre-les-Sapins",
+        "desc": "Designing and building custom business applications, advising the company on its IT decisions and digital strategy. Back where it all started.",
+        "tags": ["Business apps", "Advisory", "Digital strategy"]
+      },
+      {
         "when": "2026",
+        "what": "Fullstack developer",
+        "where": "Quodalia, Guebwiller",
+        "desc": "A web application built on strict clean architecture principles, and optimising agentic AI workflows for Claude Code.",
+        "tags": ["Clean architecture", "Agentic AI", "Claude Code"]
+      },
+      {
+        "when": "March 2026",
         "what": "CARE Alsace award",
         "where": "Hacking Health Camp, Strasbourg",
         "desc": "A weekend with caregivers and designers to make a surgical report understandable by the patient: a 3D visualisation of the operation and a RAG chatbot. Project VisiSurg.",
