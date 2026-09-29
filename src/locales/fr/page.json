@@ -80,7 +80,7 @@
       },
       {
         "title": "Les hackathons",
-        "desc": "Lauréat de la Nuit de l'info, BaselHack 2024 et 2025 avec la Team NFT, Game Jams Epitech, prix CARE Alsace au Hacking Health Camp avec VisiSurg. Une nuit blanche, une équipe, un problème réel&nbsp;: mon format préféré.",
+        "desc": "Lauréat de la Nuit de l'info, BaselHack 2024 et 2025 avec la Team NFT, Game Jams Epitech. Une nuit blanche, une équipe, un problème réel&nbsp;: mon format préféré.",
         "tags": ["Nuit de l'info", "BaselHack", "Game Jam", "Hacking Health"]
       },
       {
@@ -144,7 +144,28 @@
     "title": "La technique s'apprend. <em>La persévérance</em> se cultive.",
     "items": [
       {
+        "when": "2026 → 2027",
+        "what": "Année d'échange",
+        "where": "Dublin City University, Irlande",
+        "desc": "Une année d'informatique à Dublin dans le cadre du cursus Epitech, en anglais au quotidien. Et un pied dans la DJ Society.",
+        "tags": ["Informatique", "Anglais", "DJing"]
+      },
+      {
+        "when": "2026 → aujourd'hui",
+        "what": "CTO à temps partagé",
+        "where": "Création Parquets &amp; Carrelages, Serre-les-Sapins",
+        "desc": "Conception et développement d'applications métier sur mesure, accompagnement de l'entreprise sur ses choix informatiques et sa stratégie numérique. Retour là où tout a commencé.",
+        "tags": ["Applications métier", "Conseil", "Stratégie numérique"]
+      },
+      {
         "when": "2026",
+        "what": "Développeur fullstack",
+        "where": "Quodalia, Guebwiller",
+        "desc": "Une application web construite selon une clean architecture stricte, et l'optimisation de workflows d'IA agentique pour Claude Code.",
+        "tags": ["Clean architecture", "IA agentique", "Claude Code"]
+      },
+      {
+        "when": "Mars 2026",
         "what": "Prix CARE Alsace",
         "where": "Hacking Health Camp, Strasbourg",
         "desc": "Un week-end avec des soignants et des designers pour rendre un compte-rendu opératoire compréhensible par le patient&nbsp;: visualisation 3D de l'intervention et chatbot RAG. Projet VisiSurg.",
