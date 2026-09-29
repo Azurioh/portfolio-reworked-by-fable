@@ -144,6 +144,20 @@
     "title": "La technique s'apprend. <em>La persévérance</em> se cultive.",
     "items": [
       {
+        "when": "Mars 2026",
+        "what": "1<sup>er</sup> prix mondial",
+        "where": "Clash of Agents AWS, Strasbourg",
+        "desc": "Onze heures, une nuit, un record. Premier prix remis par le CTO d'AWS France, et la certification Claude Code in Action d'Anthropic la même année.",
+        "tags": ["Bedrock", "Agents IA"]
+      },
+      {
+        "when": "Mars 2026",
+        "what": "Prix CARE Alsace",
+        "where": "Hacking Health Camp, Strasbourg",
+        "desc": "Un week-end avec des soignants et des designers pour rendre un compte-rendu opératoire compréhensible par le patient&nbsp;: visualisation 3D de l'intervention et chatbot RAG. Projet VisiSurg.",
+        "tags": ["Santé", "RAG"]
+      },
+      {
         "when": "2026 → 2027",
         "what": "Année d'échange",
         "where": "Dublin City University, Irlande",
@@ -163,20 +177,6 @@
         "where": "Quodalia, Guebwiller",
         "desc": "Une application web construite selon une clean architecture stricte, et l'optimisation de workflows d'IA agentique pour Claude Code.",
         "tags": ["Clean architecture", "IA agentique", "Claude Code"]
-      },
-      {
-        "when": "Mars 2026",
-        "what": "Prix CARE Alsace",
-        "where": "Hacking Health Camp, Strasbourg",
-        "desc": "Un week-end avec des soignants et des designers pour rendre un compte-rendu opératoire compréhensible par le patient&nbsp;: visualisation 3D de l'intervention et chatbot RAG. Projet VisiSurg.",
-        "tags": ["Santé", "RAG"]
-      },
-      {
-        "when": "Mars 2026",
-        "what": "1<sup>er</sup> prix mondial",
-        "where": "Clash of Agents AWS, Strasbourg",
-        "desc": "Onze heures, une nuit, un record. Premier prix remis par le CTO d'AWS France, et la certification Claude Code in Action d'Anthropic la même année.",
-        "tags": ["Bedrock", "Agents IA"]
       },
       {
         "when": "Nov. 2025 → Sept. 2026",
