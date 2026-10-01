@@ -29,6 +29,8 @@ const STATIC_FILES: Readonly<Record<string, string>> = {
   'fonts/x.woff2': 'wOF2',
   'img/og.jpg': 'jpeg',
   'robots.txt': 'User-agent: *\n',
+  'cv.pdf': '%PDF-1.7\n',
+  'cv-en.pdf': '%PDF-1.7\n',
 };
 
 let staticDir: string;
@@ -95,6 +97,12 @@ describe('static site', () => {
     const response = await app.request('/robots.txt');
     expect(response.status).toBe(HTTP_OK);
     expect(response.headers.get('cache-control')).toBe(HOUR_CACHE);
+  });
+
+  it.each(['/cv.pdf', '/cv-en.pdf'])('makes every cache revalidate %s', async (path) => {
+    const response = await app.request(path);
+    expect(response.status).toBe(HTTP_OK);
+    expect(response.headers.get('cache-control')).toBe('no-cache');
   });
 
   it('answers 404 without Cache-Control for an unknown path', async () => {
