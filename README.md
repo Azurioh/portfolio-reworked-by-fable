@@ -63,11 +63,11 @@ The Hono handler (`server/app.ts` and `server/contact/`) only uses Web-standard 
 - `src/lib/contact.ts` — contact form: inline validation, honeypot, POST to `/api/contact`, mailto fallback.
 - `src/shared/contact/` — Zod schema shared by the browser and the server (`#shared/*` import alias).
 - `server/` — Hono server (`#server/*` alias): `env.ts` (the only reader of `process.env`), `app.ts` (composition), `shared/http/` (`redirects.ts`, `security-headers.ts`, `cache-control.ts`), `contact/` split into `domain/`, `application/`, `infrastructure/`, `presentation/`. HTTP behaviour is tested in `server/app.test.ts`.
-- `public/img/` — optimised WebP portrait variants and the generated `og.jpg`; `public/fonts/` — self-hosted `woff2` files (generated, committed); `public/cv.pdf`; the generated icons (`favicon.ico`, `favicon.svg`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`) and the static `robots.txt` / `sitemap.xml` / `manifest.webmanifest` (see "SEO & headers").
+- `public/img/` — optimised WebP portrait variants and the generated `og.jpg`; `public/fonts/` — self-hosted `woff2` files (generated, committed); `public/cv.pdf` (French) and `public/cv-en.pdf` (English); the generated icons (`favicon.ico`, `favicon.svg`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`) and the static `robots.txt` / `sitemap.xml` / `manifest.webmanifest` (see "SEO & headers").
 
 ## i18n
 
-`/` is French, `/en/` is English; both share the section ids, the assets and `/cv.pdf`. The switcher link (`.nav__lang`, in the header and in the mobile menu) points to the other locale and carries `hreflang`/`lang` plus an `aria-label` in the target language (`nav.langLabel`).
+`/` is French, `/en/` is English; both share the section ids, the assets; the resume link follows the locale (`/cv.pdf` in French, `/cv-en.pdf` in English, `links.cvHref`). The switcher link (`.nav__lang`, in the header and in the mobile menu) points to the other locale and carries `hreflang`/`lang` plus an `aria-label` in the target language (`nav.langLabel`).
 
 To edit a translation, change the value in `src/locales/<code>/page.json` (page content) or `src/locales/<code>/runtime.json` (strings set from TypeScript). Keep the key set identical across locales: `pnpm test` fails on a missing or extra key, on a non-string leaf and on a `{variable}` mismatch.
 
@@ -91,7 +91,7 @@ To add a locale:
 |---|---|
 | `/assets/*` (hashed by Vite) | `public, max-age=31536000, immutable` |
 | `/fonts/*`, `/img/*`, `/*.png`, `/favicon.ico`, `/favicon.svg` | `public, max-age=2592000, stale-while-revalidate=86400` |
-| `/sitemap.xml`, `/robots.txt`, `/manifest.webmanifest`, `/cv.pdf` | `public, max-age=3600` |
+| `/sitemap.xml`, `/robots.txt`, `/manifest.webmanifest`, `/cv.pdf`, `/cv-en.pdf` | `public, max-age=3600` |
 | HTML (`/`, `/en/`, `*.html`) | `no-cache` |
 | `/api/*` (any status) | `no-store` |
 
