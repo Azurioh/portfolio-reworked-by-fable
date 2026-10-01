@@ -6,7 +6,9 @@ const HASHED_ASSETS_PREFIX = '/assets/';
 const LONG_LIVED_PREFIXES: readonly string[] = ['/fonts/', '/img/'];
 const LONG_LIVED_PATHS: readonly string[] = ['/favicon.ico', '/favicon.svg'];
 const LONG_LIVED_EXTENSION = '.png';
-const HOURLY_PATHS: readonly string[] = ['/sitemap.xml', '/robots.txt', '/manifest.webmanifest', '/cv.pdf', '/cv-en.pdf'];
+const HOURLY_PATHS: readonly string[] = ['/sitemap.xml', '/robots.txt', '/manifest.webmanifest'];
+/** Unhashed files replaced in place on deploy: every cache must revalidate them so a new version shows at once. */
+const REVALIDATED_PATHS: readonly string[] = ['/cv.pdf', '/cv-en.pdf'];
 const HTML_EXTENSION = '.html';
 const DIRECTORY_SUFFIX = '/';
 
@@ -29,6 +31,8 @@ const isHourly = (path: string): boolean => HOURLY_PATHS.includes(path);
 
 const isHtml = (path: string): boolean => path.endsWith(DIRECTORY_SUFFIX) || path.endsWith(HTML_EXTENSION);
 
+const isRevalidated = (path: string): boolean => isHtml(path) || REVALIDATED_PATHS.includes(path);
+
 /** Picks the `Cache-Control` value of a successfully served path of the built site, `null` when it has no policy. */
 const resolveStaticCacheControl = (path: string): string | null => {
   if (path.startsWith(HASHED_ASSETS_PREFIX)) {
@@ -40,7 +44,7 @@ const resolveStaticCacheControl = (path: string): string | null => {
   if (isHourly(path)) {
     return ONE_HOUR;
   }
-  if (isHtml(path)) {
+  if (isRevalidated(path)) {
     return NO_CACHE;
   }
   return null;
