@@ -6,7 +6,7 @@ const HASHED_ASSETS_PREFIX = '/assets/';
 const LONG_LIVED_PREFIXES: readonly string[] = ['/fonts/', '/img/'];
 const LONG_LIVED_PATHS: readonly string[] = ['/favicon.ico', '/favicon.svg'];
 const LONG_LIVED_EXTENSION = '.png';
-const HOURLY_PATHS: readonly string[] = ['/sitemap.xml', '/robots.txt', '/manifest.webmanifest', '/cv.pdf'];
+const HOURLY_PATHS: readonly string[] = ['/sitemap.xml', '/robots.txt', '/manifest.webmanifest', '/cv.pdf', '/cv-en.pdf'];
 const HTML_EXTENSION = '.html';
 const DIRECTORY_SUFFIX = '/';
 
